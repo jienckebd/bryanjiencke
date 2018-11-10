@@ -8,7 +8,8 @@
     "config": {
         "platform": {
             "php": "5.6"
-        }
+        },
+        "sort-packages": true
     },
     "require": {
         "composer/installers": "^1.0",
@@ -54,12 +55,12 @@
         }
     ],
     "scripts": {
-      "post-install-cmd": [
-        "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-      ],
-      "post-update-cmd": [
-        "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-      ]
+        "post-install-cmd": [
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+        ],
+        "post-update-cmd": [
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+        ]
     },
     "extra": {
         "installer-types": [
@@ -89,8 +90,48 @@
             ],
             "drush/contrib/{$name}": [
                 "type:drupal-drush"
+            ],
+            "docroot/core": [
+                "type:drupal-core"
+            ],
+            "docroot/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "docroot/modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "docroot/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "docroot/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "docroot/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "docroot/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ],
+            "docroot/libraries/{$name}": [
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
+            ],
+            "drush/Commands/{$name}": [
+                "type:drupal-drush"
             ]
         },
-        "enable-patching": true
+        "enable-patching": true,
+        "merge-plugin": {
+            "require": [
+                "blt/composer.required.json",
+                "blt/composer.suggested.json"
+            ],
+            "merge-extra": true,
+            "merge-extra-deep": true,
+            "merge-scripts": true,
+            "replace": false,
+            "ignore-duplicates": true
+        }
     }
 }
