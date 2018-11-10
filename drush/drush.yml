@@ -4,10 +4,20 @@
 drush:
   paths:
     config:
-      # Load a drush.yml configuration file from the current working directory.
-      - ../docroot/sites/default/local.drush.yml
       # Allow local global config overrides.
-      - local.drush.yml
+      - dev.drush.yml
     include:
       - '${env.home}/.drush'
       - /usr/share/drush/commands
+
+options:
+  # Specify the base_url that should be used when generating links.
+  # Not recommended if you have more than one Drupal site on your system.
+  uri: 'http://bryanjiencke.docksal'
+
+  # Specify your Drupal core base directory (useful if you use symlinks).
+  # Not recommended if you have more than one Drupal root on your system.
+  root: '/Users/bry/sys/platform/bryanjiencke/html'
+
+  # Enable verbose mode.
+  verbose: true

@@ -800,6 +800,7 @@ if (PHP_SAPI !== 'cli') {
 $is_cloud = isset($_ENV['AWS']);
 $is_ci = isset($_ENV['TRAVIS']);
 $is_local = !$is_cloud && !$is_ci;
+$is_local_host = file_exists("{$_SERVER['HOME']}/sys/platform");
 
 if ($is_local) {
   $_ENV['SYS_CONTEXT'] = 'local';
@@ -814,5 +815,5 @@ else {
 
 $context_settings_path = DRUPAL_ROOT . "/sites/default/sys/context/{$_ENV['SYS_CONTEXT']}/settings.php";
 if (file_exists($context_settings_path)) {
-  require_once "[$context_settings_path}";
+  require_once $context_settings_path;
 }

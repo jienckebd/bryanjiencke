@@ -130,11 +130,22 @@ $settings['rebuild_access'] = TRUE;
  */
 $settings['skip_permissions_hardening'] = TRUE;
 
-$databases['default']['default'] = [
-  'database' => 'default',
-  'username' => 'user',
-  'password' => 'user',
-  'host' => '127.0.0.1',
-  'driver' => 'mysql',
-  'port' => 33061,
-];
+if ($is_local_host) {
+  $databases['default']['default'] = [
+    'database' => 'default',
+    'username' => 'user',
+    'password' => 'user',
+    'host' => '127.0.0.1',
+    'driver' => 'mysql',
+    'port' => 33061,
+  ];
+}
+else {
+  $databases['default']['default'] = [
+    'database' => 'default',
+    'username' => 'user',
+    'password' => 'user',
+    'host' => 'db',
+    'driver' => 'mysql',
+  ];
+}
