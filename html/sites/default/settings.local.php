@@ -153,10 +153,10 @@ if (file_exists('/var/sys/platform')) {
 }
 else {
   $databases['default']['default'] = array (
-    'database' => 'default',
-    'username' => 'user',
-    'password' => 'user',
-    'host' => 'db',
+    'database' => 'drupal',
+    'username' => 'drupal',
+    'password' => '',
+    'host' => 'localhost',
     'driver' => 'mysql',
   );
 }
