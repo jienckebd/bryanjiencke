@@ -4,7 +4,34 @@
 
 $toolbar-width: 240px;
 
+body {
+  padding-top: 72px !important;
+}
+
+header#navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  height: 52px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+body.toolbar-tray-open.toolbar-fixed {
+  padding-top: 152px !important;
+
+  header#navbar {
+    top: 78px;
+  }
+}
+
 body.toolbar-fixed {
+  padding-top: 112px !important;
+
+  header#navbar {
+    top: 38px;
+  }
 
   // Fix z-index.
   .toolbar-oriented .toolbar-bar {

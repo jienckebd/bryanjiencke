@@ -1,0 +1,5 @@
+services:
+  cn_vote.route_subscriber:
+    class: Drupal\cn_vote\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

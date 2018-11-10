@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the cn_core module.
+ */
+
+/**
+ * Release 2018.2.
+ */
+function cn_core_install() {
+
+  /** @var \Drupal\cn_core\Service\SysInternal $sys_manager_internal */
+  $sys_manager_internal = \Drupal::service('sys.internal');
+
+  // Delete node 13057 so 404 landing page can import.
+
+  $delete_entities = [
+    'node' => [
+      13062,
+      13057,
+      13908,
+      14033,
+      14093,
+    ],
+    'block_content' => [
+      9,
+    ],
+    'paragraph' => [
+      51402,
+      51403,
+      51405,
+      51428,
+    ],
+    'media' => [
+      9833,
+      9836,
+      9840,
+      9862,
+      9996,
+      10241,
+    ],
+    'file' => [
+      9982,
+      9983,
+      9984,
+      9995,
+      10091,
+      10390,
+    ],
+  ];
+
+  foreach ($delete_entities as $entity_type => $entity_ids) {
+    foreach ($entity_ids as $entity_id) {
+      $entity = $sys_manager_internal->entityTypeManager
+        ->getStorage($entity_type)
+        ->load($entity_id);
+      if (!empty($entity)) {
+        $entity->delete();
+      }
+    }
+  }
+
+  // Delete configs.
+  $config_ids = [
+    'block.block.mainnavigation',
+    'block.block.newslettersignup_2',
+    'block.block.socialshare',
+    'block.block.tm_theme_breadcrumbs',
+    'block.block.tm_theme_content',
+    'block.block.tm_theme_footer',
+    'block.block.tm_theme_help',
+    'block.block.tm_theme_local_actions',
+    'block.block.tm_theme_local_tasks',
+    'block.block.tm_theme_main_menu',
+    'block.block.tm_theme_messages',
+    'block.block.tm_theme_search',
+    'tm_theme.settings',
+    'page_manager.page.node_view',
+  ];
+  $sys_manager_internal->deleteConfig($config_ids);
+
+  // Uninstall modules.
+  $module_list_uninstall = [
+    'search_api_views_taxonomy',
+    // 'tm_core',
+  ];
+  $sys_manager_internal->uninstallModule($module_list_uninstall);
+
+  // Install modules.
+  $module_list_install = [
+    'viewsreference',
+    'default_content',
+    'eck',
+    'cn_core',
+    'cn_display',
+    'cn_doc',
+    'cn_vote',
+    'cn_feeds',
+    'cn_api',
+    'cn_connector',
+    'default_content',
+    'bootstrap_layouts',
+    'default_content',
+    'autoref',
+  ];
+  $sys_manager_internal->installModule($module_list_install);
+
+  // Generate aliases for unaliased paths.
+
+  // Clean deleted fields.
+  $sys_manager_internal->keyValue->get('entity.storage_schema.sql')->delete('block_content.field_schema_data.field_form_webform');
+  $sys_manager_internal->cleanDeletedFields();
+
+  $sys_manager_internal->truncateTableByStringMatch(['entity_subqueu%']);
+
+}

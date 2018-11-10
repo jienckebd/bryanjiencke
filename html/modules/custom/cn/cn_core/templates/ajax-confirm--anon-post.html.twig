@@ -1,0 +1,18 @@
+<div id="{{ id }}" class="ajax-confirm block--style--grey-yellow padding-even size--lg ajax--wrapper">
+  <div class="ajax-confirm--inner">
+    <div class="ajax-confirm--heading heading-medium">{{ heading }}</div>
+    <div class="ajax-confirm--content">
+      <div class="ajax-confirm--copy">
+        {% trans %}Our team is reviewing your submission and will be in touch within 3 business days.{% endtrans %}
+      </div>
+      <div class="ajax-confirm--contact">
+        {% trans %}Please contact us at: <a href="mailto:thetalkingmachines@gmail.com">thetalkingmachines@gmail.com</a> if you have any questions.{% endtrans %}
+      </div>
+      {% if modal %}
+      <div class="ajax-confirm--close">
+        <a class="btn btn-primary use-ajax btn-lg" href="/ajax/modal/close">{% trans %}Close Window{% endtrans %}</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+entity.autoref_type.type_add_form:
+  route_name: entity.autoref_type.add_form
+  title: 'Add Autoref Type'
+  appears_on:
+    - entity.autoref_type.collection
+entity.autoref.add_page:
+  route_name: entity.autoref.add_page
+  title: 'Add Autoref'
+  appears_on:
+    - entity.autoref.collection

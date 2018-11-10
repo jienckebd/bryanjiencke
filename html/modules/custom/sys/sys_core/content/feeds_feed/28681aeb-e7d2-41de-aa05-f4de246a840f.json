@@ -1,0 +1,104 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/tm.local\/feed\/21?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/feeds_feed\/term_tag_crawler"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/feeds_feed\/term_tag_crawler\/uid": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ]
+    },
+    "fid": [
+        {
+            "value": 21
+        }
+    ],
+    "uuid": [
+        {
+            "value": "28681aeb-e7d2-41de-aa05-f4de246a840f"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "term_tag_crawler"
+        }
+    ],
+    "title": [
+        {
+            "value": "Term: Tag: AITopics: Concept"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/feeds_feed\/term_tag_crawler\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": false
+        }
+    ],
+    "created": [
+        {
+            "value": 1523623479
+        }
+    ],
+    "changed": [
+        {
+            "value": 1524062924
+        }
+    ],
+    "imported": [
+        {
+            "value": 1524053774
+        }
+    ],
+    "next": [
+        {
+            "value": 1524057374
+        }
+    ],
+    "queued": [
+        {
+            "value": 0
+        }
+    ],
+    "source": [
+        {
+            "value": "https:\/\/aitopics.org\/search"
+        }
+    ],
+    "config": [
+        []
+    ],
+    "item_count": [
+        {
+            "value": 86
+        }
+    ],
+    "metatag": [
+        {
+            "value": {
+                "title": "| Talking Machines"
+            }
+        }
+    ]
+}

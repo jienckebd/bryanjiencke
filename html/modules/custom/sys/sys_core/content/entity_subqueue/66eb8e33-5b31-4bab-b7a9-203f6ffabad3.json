@@ -1,0 +1,127 @@
+{
+    "_links": {
+        "self": {
+            "href": ""
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/entity_subqueue\/homepage_arxiv"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_arxiv\/items": [
+            {
+                "href": "http:\/\/tm.local\/article\/learning-base-distribution-implicit-generative-models?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/game-theoretic-approach-design-secure-and-resilient-distributed-support-vector-machines?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/random-features-large-scale-kernel-machines?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_arxiv\/uid": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ]
+    },
+    "name": [
+        {
+            "value": "homepage_arxiv"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "66eb8e33-5b31-4bab-b7a9-203f6ffabad3"
+        }
+    ],
+    "queue": [
+        {
+            "target_id": "homepage_arxiv"
+        }
+    ],
+    "title": [
+        {
+            "value": "Homepage: arXiv"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_arxiv\/items": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/learning-base-distribution-implicit-generative-models?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "b2b5fc2d-f8d0-4670-a1ad-abe4699c83f1"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/game-theoretic-approach-design-secure-and-resilient-distributed-support-vector-machines?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "0399f6e2-282e-41c7-8ef9-473e973a25c1"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/random-features-large-scale-kernel-machines?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "bec1936e-1c25-4c85-8633-216f951a4e07"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_arxiv\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ]
+    },
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1518211835
+        }
+    ],
+    "changed": [
+        {
+            "value": 1523357273
+        }
+    ]
+}

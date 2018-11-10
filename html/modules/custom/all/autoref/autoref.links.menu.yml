@@ -1,0 +1,15 @@
+autoref.settings:
+  title: 'Auto Reference Settings'
+  parent: system.admin_config_system
+  description: 'Configure the behavior of auto references.'
+  route_name: autoref.settings
+
+entity.autoref_type.collection:
+  title: 'Autoref Types'
+  parent: system.admin_structure
+  description: 'Create and manage fields, forms, and display settings for your autorefs.'
+  route_name: entity.autoref_type.collection
+
+entity.autoref.add_page:
+  title: 'Add Autoref'
+  route_name: entity.autoref.add_page

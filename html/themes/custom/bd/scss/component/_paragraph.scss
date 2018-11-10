@@ -1,0 +1,45 @@
+.js .field--widget-paragraphs td {
+  padding: 10px;
+}
+
+.js .paragraph-type-top {
+  display: none;
+}
+
+.paragraphs-icon-button-collapse {
+  display: none !important;
+}
+
+td.field-multiple-drag {
+  padding: 20px 0 !important;
+}
+
+.field--name-field-content {
+  line-height: 1.6;
+
+  .field--type-entity-reference-revisions {
+    margin-bottom: 40px;
+  }
+
+  .field--name-field-name {
+    font-family: $heading_font;
+    text-transform: uppercase;
+    font-size: 24px;
+    border-bottom: 1px solid #DDD;
+    padding-bottom: 3px;
+    margin-bottom: 20px;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .bs-region {
+    padding: 0;
+  }
+
+}

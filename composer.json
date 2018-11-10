@@ -38,7 +38,10 @@
         "drupal/honeypot": "^1.29",
         "drupal/embed": "^1.0",
         "drupal/entity_embed": "^1.0@beta",
-        "drupal/dropzonejs": "^2.0@alpha"
+        "drupal/dropzonejs": "^2.0@alpha",
+        "drupal/feeds": "^3.0@alpha",
+        "drupal/rules": "^3.0@alpha",
+        "drupal/inline_entity_form": "^1.0@RC"
     },
     "repositories": [
         {

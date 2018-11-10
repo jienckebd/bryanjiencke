@@ -1,0 +1,71 @@
+.inline-fields .field--name-field-company .fa {
+  font-size: 36px;
+}
+
+.inline-fields .field--name-field-company {
+  width: 10% !important;
+}
+
+.inline-fields .job-title-wrapper {
+  width: 50% !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.node--view-mode-teaser.node--type-job {
+  padding: 18px 0 !important;
+}
+
+.view-id-job_board_table tr > td:first-child {
+  width: 100px;
+}
+
+.table--plain .field-job-title {
+  font-weight: 700;
+}
+
+.table--plain td {
+  padding: 15px 5px !important;
+}
+
+td.strong {
+  font-weight: 700;
+}
+
+.table--plain td, .table--plain th, .table--plain td, .table--plain tr {
+  background-color: transparent;
+  border: none !important;
+}
+
+.table--plain thead {
+  font-family: $font-family-monospace;
+  border-color: #FFF;
+  border-bottom: 2px solid $yellow;
+}
+
+.table--plain table tbody tr:nth-child(even) {
+  background-color: transparent !important;
+}
+
+td[headers="view-field-company-table-column"] {
+  width: 120px;
+}
+
+.node--type-job.node--view-mode-featured {
+  .inline-fields > .field {
+    margin-right: 50px;
+  }
+
+  .media--image {
+    max-height: 120px;
+  }
+}
+
+.node--type-job.node--view-mode-full {
+  .field--name-field-media-image {
+    img {
+      margin: 0 auto;
+    }
+  }
+}

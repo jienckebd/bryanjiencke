@@ -1,0 +1,26 @@
+div[data-block-plugin-id="block_content:8836e97c-39da-4ea1-9452-94844ab0d911"] {
+  margin-top: 60px;
+
+  @media (min-width: 960px) {
+    .field--name-field-view.field__item:first-child {
+      width: 66.66666%;
+      float: left;
+
+      .view__row {
+        float: left;
+        width: 50%;
+      }
+    }
+
+    .field--name-field-view.field__item:last-child {
+      float: left;
+      width: 33.3%;
+    }
+  }
+
+  .view__row {
+    img.media__element {
+      max-width: initial !important;
+    }
+  }
+}

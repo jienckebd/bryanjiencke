@@ -3,6 +3,7 @@
 /html/modules/contrib
 /html/profiles/contrib
 /html/themes/contrib
+/html/themes/*/*/node_modules
 /html/sites/default/files
 /html/libraries
 vendor/

@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @param array $entity_types
+ */
+function cn_core_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  if (!empty($entity_types['entity_form_display'])) {
+    $entity_types['entity_form_display']->setFormClass('default', \Drupal\cn_build\Form\EntityFormDisplayEditForm::class);
+  }
+  if (!empty($entity_types['entity_view_display'])) {
+    $entity_types['entity_view_display']->setFormClass('default', \Drupal\cn_build\Form\EntityViewDisplayEditForm::class);
+  }
+}

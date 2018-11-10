@@ -1,0 +1,10 @@
+name: 'CN Build'
+core: 8.x
+type: module
+description: 'Collective Next build display extension.'
+version: '8.x-1.0.0'
+package: CN
+
+dependencies:
+  - ds
+  - page_manager

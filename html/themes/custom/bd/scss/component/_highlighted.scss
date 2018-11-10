@@ -1,0 +1,26 @@
+#highlighted {
+  background-color: $yellow;
+  text-align: center;
+  padding: 7px 0;
+  position: relative;
+  z-index: 8;
+  color: $black;
+  font-family: $font-family-monospace;
+  font-size: 15px;
+  clear: both;
+  top: 0;
+  display: none;
+  margin: 0;
+
+  @media (min-width: 990px) {
+    display: block;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    font-weight: 700;
+  }
+}

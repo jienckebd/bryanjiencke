@@ -1,44 +1,149 @@
-/**
- * AJAX (throbber) styling.
- */
+// Sidebar Block
+//
+// Sidebar block styling.
+//
+// Markup: block.twig
+//
+// Style guide: components.block
 
-// $todo This should probably be it's own mixin/component?
-@keyframes glyphicon-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(359deg); }
-}
-.glyphicon-spin {
-  display: inline-block;
-  animation: glyphicon-spin 1s infinite linear;
-}
-a .glyphicon-spin {
-  display: inline-block;
-  text-decoration: none;
+.ajax--wrapper {
+  position: relative;
+  opacity: 1;
+  transition: opacity 0.25s ease 0s;
+
+  .messages {
+    margin: 0 0 15px !important;
+  }
 }
 
-html.js {
-  .btn .ajax-throbber {
-    margin-left: .5em;
-    margin-right: -.25em;
+.ajax--wrapper.ajax--processing {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+  position: relative;
+  z-index: 0;
+
+  &:before {
+    animation: fa-spin 2s infinite linear;
+    font-family: $font-family-icon;
+    content: "\f013";
+    font-size: 75px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 50px auto 0;
+    z-index: 999;
+    text-align: center;
+    color: #000;
+  }
+}
+
+.ajax-progress {
+  display: none;
+}
+
+.ajax--progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 60px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease 0s;
+  z-index: 999;
+  color: #343434;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+#ajax--progress--page {
+  position: fixed;
+  top: 30%;
+  opacity: 1;
+  font-size: 90px;
+  color: #FFF;
+}
+
+body.ajax--processing #ajax--progress--page {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ajax--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 100;
+  transition: opacity 0.5s ease 0s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+body.ajax--processing .ajax--overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.node-article-anonymous-form .ajax-confirm--content {
+  margin-top: 20px;
+
+  .ajax-confirm--close {
+    margin-top: 20px;
+  }
+}
+
+.ajax--wrapper {
+  .ajax-confirm--inner {
+    padding: 10px 5px;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    word-wrap: break-word;
+
+    .fa {
+      padding-right: 5px;
+      text-shadow: 0 0 4px $yellow, 0 0 4px $yellow, 0 0 4px $yellow;
+    }
   }
 
-  .form-item .input-group-addon {
-    .glyphicon {
-      color: $gray-light;
-      opacity: .5;
-      transition: 150ms color, 150ms opacity;
-      &.glyphicon-spin {
-        color: $brand-primary;
-        opacity: 1;
-      }
+  .ajax-confirm--heading {
+    color: $black;
+  }
+
+  .size--lg {
+    .ajax-confirm--heading {
+      font-size: 32px;
+      color: #333;
+      line-height: 1;
+      margin-bottom: 10px;
     }
-    .input-group-addon {
-      background-color: rgb(255, 255, 255);
+
+    .ajax-confirm--copy {
+      margin-bottom: 40px;
+      font-size: 16px;
+    }
+
+    .ajax-confirm--contact {
+      margin-bottom: 40px;
+      font-size: 13px;
     }
   }
 
-  // Hide empty wrappers from AJAX/Field APIs.
-  .ajax-new-content:empty {
-    display: none !important;
+}
+
+.modal {
+  .ajax--wrapper .ajax-confirm--inner {
+    padding: 70px 0;
+  }
+  .ajax--wrapper .ajax-confirm--heading {
+    font-size: 26px;
+    margin-bottom: 40px;
+  }
+  .ajax--wrapper .ajax-confirm--copy{
+    font-size: 22px;
   }
 }

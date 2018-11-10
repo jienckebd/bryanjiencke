@@ -1,0 +1,193 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/tm.local\/media\/9833?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/media\/image"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/revision_user": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/thumbnail": [
+            {
+                "href": "http:\/\/tm.local\/sites\/default\/files\/2018-04\/New%20podcast%20graphic_0_0.png"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/uid": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/field_media_image": [
+            {
+                "href": "http:\/\/tm.local\/sites\/default\/files\/2018-04\/New%20podcast%20graphic_0_0.png"
+            }
+        ]
+    },
+    "mid": [
+        {
+            "value": 9833
+        }
+    ],
+    "uuid": [
+        {
+            "value": "786e75f7-f82f-4421-86d9-880911fab355"
+        }
+    ],
+    "vid": [
+        {
+            "value": 10243
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": 1523969065
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/revision_user": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/thumbnail": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/sites\/default\/files\/2018-04\/New%20podcast%20graphic_0_0.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "422b3593-0d24-4760-87b2-5801c7c0152c"
+                    }
+                ],
+                "alt": "Thumbnail",
+                "title": "Podcast Default",
+                "width": "3601",
+                "height": "1801"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/field_media_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/sites\/default\/files\/2018-04\/New%20podcast%20graphic_0_0.png"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "422b3593-0d24-4760-87b2-5801c7c0152c"
+                    }
+                ],
+                "alt": "",
+                "title": "",
+                "width": "3601",
+                "height": "1801"
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "name": [
+        {
+            "value": "Podcast Default"
+        }
+    ],
+    "created": [
+        {
+            "value": 1522536595
+        }
+    ],
+    "changed": [
+        {
+            "value": 1523885052
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "metatag": [
+        {
+            "value": {
+                "title": "| Talking Machines"
+            }
+        }
+    ],
+    "field_default": [
+        {
+            "value": false
+        }
+    ],
+    "field_height": [
+        {
+            "value": 1801
+        }
+    ],
+    "field_width": [
+        {
+            "value": 3601
+        }
+    ]
+}

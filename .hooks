@@ -1,0 +1,22 @@
+# Fires after an environment is installed.
+install: |
+  drush {{alias}} cr
+
+# Fires after code is deployed. A "deployment" happens when you push to your
+# git repository or select a new branch or tag for your environment.
+deploy: |
+  drush {{alias}} updb --entity-updates -y
+  drush {{alias}} cr
+
+# Fires after "verify" task.
+verify: |
+  drush {{alias}} status
+
+# Fires after "Run Tests" task.
+test: |
+  drush {{alias}} uli
+
+
+# Fires after "Deploy Data (Sync)" task.
+sync: |
+  drush {{alias}} en devel -y

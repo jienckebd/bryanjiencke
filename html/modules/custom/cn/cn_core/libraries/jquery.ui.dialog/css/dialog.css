@@ -1,0 +1,138 @@
+/*!
+ * jQuery UI Dialog 1.11.4
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/dialog/#theming
+ */
+
+body.ui-dialog--active {
+  overflow: hidden;
+}
+
+.ui-dialog {
+  overflow: hidden;
+  position: absolute;
+  padding: .2em;
+  outline: 0;
+  bottom: 100px !important;
+  top: 50px !important;
+  z-index: 1000 !important;
+}
+
+.ui-dialog.modal-lg {
+  left: 50px !important;
+  right: 50px !important;
+  width: initial !important;
+}
+
+.ui-dialog.modal-md {
+  left: 10% !important;
+  right: 10% !important;
+  width: initial !important;
+}
+
+.ui-dialog.modal-sm {
+  left: 30% !important;
+  right: 30% !important;
+  width: initial !important;
+  bottom: initial !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  padding: .4em 1em;
+  position: relative;
+}
+.ui-dialog .ui-dialog-title {
+  float: left;
+  margin: .1em 0;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #FFF;
+  font-size: 30px;
+  font-family: "CPMono";
+}
+.ui-dialog .ui-dialog-titlebar-close {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  width: 20px;
+  margin: 0;
+  padding: 1px;
+  height: 20px;
+  display: block !important;
+  z-index: 101;
+  background: none;
+  border: none;
+  transition: all 0.25s ease 0s;
+}
+.ui-dialog .ui-dialog-titlebar-close:focus {
+  outline: none;
+}
+.ui-dialog .ui-dialog-titlebar-close:hover:after {
+  text-shadow: 0 0 2px rgba(40, 40, 40, 0.6);
+  color: #000;
+}
+.ui-dialog .ui-dialog-titlebar-close:after {
+  content: "\f057";
+  font-family: FontAwesome;
+  font-size: 30px;
+  color: #FFFF00;
+  transition: all 0.25s ease 0s;
+}
+.ui-dialog .ui-dialog-content {
+  position: relative;
+  border: 0;
+  background: none;
+  overflow: auto;
+  background-color: #F0F2F5;
+  padding: 0;
+  height: 100% !important;
+  border-radius: 3px;
+  min-height: 100% !important;
+}
+.ui-dialog .ui-dialog-buttonpane {
+  text-align: left;
+  border-width: 1px 0 0 0;
+  background-image: none;
+  margin-top: .5em;
+  padding: .3em 1em .5em .4em;
+  position: fixed;
+  top: 22px;
+  right: 30px;
+}
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+  float: right;
+}
+.ui-dialog .ui-dialog-buttonpane button {
+  margin: .5em .4em .5em 0;
+  cursor: pointer;
+  float: left;
+  width: initial;
+}
+.ui-dialog .ui-resizable-se {
+  width: 12px;
+  height: 12px;
+  right: -5px;
+  bottom: -5px;
+  background-position: 16px 16px;
+}
+.ui-draggable .ui-dialog-titlebar {
+  cursor: move;
+}
+
+.ui-dialog .panel-default {
+  border-color: transparent;
+}
+
+.ui-dialog-buttonset .btn-primary {
+  position: fixed;
+  bottom: 30px;
+  right: 50px;
+  padding: 15px 30px;
+}

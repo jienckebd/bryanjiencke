@@ -1,0 +1,307 @@
+{
+    "_links": {
+        "self": {
+            "href": ""
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/entity_subqueue\/homepage_article"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_article\/items": [
+            {
+                "href": "http:\/\/tm.local\/article\/june-16-2017\/shrinking-data-surgical-training?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/march-07-2018\/mit-intelligence-quest-kicks?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/march-06-2018\/ml-20-machine-learning-many?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/march-01-2018\/eric-schmidt-provides-support-mit-intelligence-quest?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/december-19-2017\/inventing-google-predictive-analytics?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/november-05-2017\/artificial-intelligence-aids-materials-fabrication?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/october-30-2017\/faster-big-data-analysis?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/september-28-2017\/bug-repair-system-learns-example?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/september-20-2017\/new-leadership-mit-ibm-watson-ai-lab?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/july-20-2017\/artificial-intelligence-suggests-recipes-based-food-photos?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/july-18-2017\/lincoln-laboratory-enters-licensing-agreement-produce-its-localizing-ground?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/july-18-2017\/bringing-neural-networks-cellphones?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/tm.local\/article\/july-11-2017\/miniaturizing-brain-drone?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_article\/uid": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ]
+    },
+    "name": [
+        {
+            "value": "homepage_article"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "c7db25d1-a7fe-48b0-959c-e4357321f723"
+        }
+    ],
+    "queue": [
+        {
+            "target_id": "homepage_article"
+        }
+    ],
+    "title": [
+        {
+            "value": "Homepage: article"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_article\/items": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/june-16-2017\/shrinking-data-surgical-training?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "0bf1dbb8-dcf4-4b81-a374-dd1d2f29467c"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/march-07-2018\/mit-intelligence-quest-kicks?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "dfd8aea2-cbcd-41e8-850f-2a10d45dbab5"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/march-06-2018\/ml-20-machine-learning-many?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cfea5f49-8eb8-4ca6-9bed-3d475ef7ecd4"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/march-01-2018\/eric-schmidt-provides-support-mit-intelligence-quest?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "a4deba77-8d59-40f2-a4b0-d427aee9f8a5"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/december-19-2017\/inventing-google-predictive-analytics?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "877b6219-a311-4ef9-af64-43726046cc41"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/november-05-2017\/artificial-intelligence-aids-materials-fabrication?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "a4356053-7633-4b61-a8bb-270803b3d272"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/october-30-2017\/faster-big-data-analysis?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3ec7e008-143d-417c-bcc5-09405f53a7ee"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/september-28-2017\/bug-repair-system-learns-example?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "534307d2-f0c4-4c77-a2b2-c3acfa5f9e63"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/september-20-2017\/new-leadership-mit-ibm-watson-ai-lab?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e192459e-8ad8-4840-9505-a4908a8579fd"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/july-20-2017\/artificial-intelligence-suggests-recipes-based-food-photos?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "a5f8875b-91b8-4171-b17f-b6ab89fe81de"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/july-18-2017\/lincoln-laboratory-enters-licensing-agreement-produce-its-localizing-ground?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "658f6b93-55ec-4f72-9d69-e75e717024b2"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/july-18-2017\/bringing-neural-networks-cellphones?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e79d913c-fbbf-4fa7-904b-228d980c0d83"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/article\/july-11-2017\/miniaturizing-brain-drone?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/node\/article"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "b13882ad-f771-4d45-b6ff-250d618e98c0"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/entity_subqueue\/homepage_article\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ]
+    },
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1518211849
+        }
+    ],
+    "changed": [
+        {
+            "value": 1523881320
+        }
+    ]
+}

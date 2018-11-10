@@ -1,0 +1,14 @@
+.doc--type-default {
+  &.doc--view-mode-icon {
+    .field--name-field-icon {
+      font-family: $font-family-monospace;
+      font-size: 0.8em;
+      margin-right: -7px;
+    }
+  }
+
+  &.doc--view-mode-full {
+    background-color: $white;
+    padding: 15px;
+  }
+}

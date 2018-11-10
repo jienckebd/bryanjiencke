@@ -1,0 +1,95 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/tm.local\/sites\/default\/files\/embed_buttons\/icon-image_0_14_0.png"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/file\/file\/uid": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ]
+    },
+    "fid": [
+        {
+            "value": 10091
+        }
+    ],
+    "uuid": [
+        {
+            "value": "f7d95a8e-b928-49d5-80f4-354b8d1ef561"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/file\/file\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ]
+    },
+    "filename": [
+        {
+            "value": "icon-image.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public:\/\/embed_buttons\/icon-image_0_14_0.png",
+            "url": "\/sites\/default\/files\/embed_buttons\/icon-image_0_14_0.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image\/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 470
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": 1523030334
+        }
+    ],
+    "changed": [
+        {
+            "value": 1523030334
+        }
+    ],
+    "url": [
+        {
+            "value": "\/sites\/default\/files\/embed_buttons\/icon-image_0_14_0.png"
+        }
+    ],
+    "data": [
+        {
+            "value": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA2FBMVEUAAAAAAAD\/\/\/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD\/\/\/8AAAAAAAAGBgYAAAAAAABaWlpgYGAHBwcODg4KCgoAAAAAAAAdHR0JCQn\/\/\/8VFRUZGRkZGRn\/\/\/8mJiYAAAAMDAwODg4PDw8SEhITExMUFBQXFxcaGhocHBweHh4fHx8iIiIjIyMlJSUpKSkqKiotLS02NjY4ODg5OTk7Ozs8PDw+Pj5AQEBBQUFCQkJERERHR0dJSUlKSkpLS0tMTExOTk5PT09QUFBRUVFSUlJVVVVZWVl33uIHAAAAIHRSTlMACAgKFSEqTFBVYHR2fpygqq2tztXb5ebm6urv8vX4\/sE9S38AAACNSURBVBgZhcFXF4FgAIDhV7bskc0XKrIyS1b2\/\/9HnKMLXXke+E8EAIvODwuYSOlqWvKNABNlr+AzAINirYBPA\/rIDZmPeAZ0QOUr2uwmMAEVUvkIodLz1YrNAY1Ye11PZg+P+7ViAeNw2bt50+XldDxvZ4CZ27jOznUd27ZXQ0AIQ9e+Bj0BdAIAKYA3G08S5VN3OnoAAAAASUVORK5CYII="
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+// Events.
+
+.node--type-event.node--view-mode-featured {
+
+  .field--name-field-date {
+    float: left;
+    width: 25%;
+  }
+
+  .field--name-field-address {
+    float: left;
+    width: 25%;
+  }
+
+  .field--name-field-link {
+    float: right;
+    width: 50%;
+    text-align: right;
+  }
+
+  .media--image {
+    max-height: 120px;
+  }
+
+  .field--name-field-media-image {
+    img {
+      min-height: 150px;
+      width: auto;
+      @media (max-width: 990px) {
+        min-height: 85px;
+      }
+    }
+  }
+
+}

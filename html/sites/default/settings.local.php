@@ -141,6 +141,26 @@ $databases['default']['default'] = array (
   'driver' => 'mysql',
 );
 
+if (file_exists('/var/sys/platform')) {
+  $databases['default']['default'] = array (
+    'database' => 'default',
+    'username' => 'user',
+    'password' => 'user',
+    'host' => '127.0.0.1',
+    'driver' => 'mysql',
+    'port' => 33061,
+  );
+}
+else {
+  $databases['default']['default'] = array (
+    'database' => 'default',
+    'username' => 'user',
+    'password' => 'user',
+    'host' => 'db',
+    'driver' => 'mysql',
+  );
+}
+
 $settings['install_profile'] = 'social';
 
 // Workaround for permission issues with NFS shares

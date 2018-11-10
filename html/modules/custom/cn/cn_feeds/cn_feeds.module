@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @param array $entity_types
+ */
+function cn_feeds_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  if (!empty($entity_types['feeds_feed'])) {
+    $entity_types['feeds_feed']->setClass(\Drupal\cn_feeds\Entity\Feed::class);
+  }
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function cn_feeds_views_data_alter(array &$data) {
+  if (!empty($data['node__feeds_item'])) {
+    $data['node__feeds_item']['feeds_item_target_id']['filter']['id'] = 'entity_reference_options';
+  }
+}

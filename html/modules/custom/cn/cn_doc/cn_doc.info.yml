@@ -1,0 +1,6 @@
+name: 'CN Documentation'
+core: 8.x
+type: module
+description: 'Collective Next documentation extension.'
+version: '8.x-1.0.0'
+package: CN

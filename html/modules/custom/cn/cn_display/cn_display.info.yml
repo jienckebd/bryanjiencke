@@ -1,0 +1,11 @@
+name: 'CN Display'
+core: 8.x
+type: module
+description: 'Collective Next display extension.'
+version: '8.x-1.0.0'
+package: CN
+
+dependencies:
+  - ds
+  - page_manager
+  - font_field_icon

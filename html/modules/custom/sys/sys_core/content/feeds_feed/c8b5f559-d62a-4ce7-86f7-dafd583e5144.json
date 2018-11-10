@@ -1,0 +1,104 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/tm.local\/feed\/22?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/feeds_feed\/term_tag_crawler"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/feeds_feed\/term_tag_crawler\/uid": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ]
+    },
+    "fid": [
+        {
+            "value": 22
+        }
+    ],
+    "uuid": [
+        {
+            "value": "c8b5f559-d62a-4ce7-86f7-dafd583e5144"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "term_tag_crawler"
+        }
+    ],
+    "title": [
+        {
+            "value": "Term: Tag: AITopics: Technology"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/feeds_feed\/term_tag_crawler\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": false
+        }
+    ],
+    "created": [
+        {
+            "value": 1523803516
+        }
+    ],
+    "changed": [
+        {
+            "value": 1524062910
+        }
+    ],
+    "imported": [
+        {
+            "value": 1524053327
+        }
+    ],
+    "next": [
+        {
+            "value": 1524056927
+        }
+    ],
+    "queued": [
+        {
+            "value": 0
+        }
+    ],
+    "source": [
+        {
+            "value": "https:\/\/aitopics.org\/facet-children?no-href=&a_class=dfilt&view=&q=&filters=&parent=Technology%7CInformation+Technology%7CArtificial+Intelligence"
+        }
+    ],
+    "config": [
+        []
+    ],
+    "item_count": [
+        {
+            "value": 11
+        }
+    ],
+    "metatag": [
+        {
+            "value": {
+                "title": "| Talking Machines"
+            }
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+.entity-display {
+  &.entity-type--feeds-feed,
+  &.bundle--api-endpoint {
+    background-color: #F0F2F5;
+    border-top: 2px solid #FF0;
+    padding: 15px;
+    margin-bottom: 20px;
+
+    .field {
+      margin-bottom: 20px;
+    }
+  }
+}

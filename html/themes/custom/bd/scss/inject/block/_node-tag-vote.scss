@@ -1,0 +1,52 @@
+.block--id--11 {
+  .view-node-tags-vote {
+  }
+
+  .pager {
+    text-align: center;
+    margin: 8px 0 -5px;
+
+    a {
+      font-size: 0;
+      color: #CCC;
+      margin-top: -20px;
+      transition: all 0.25s ease 0s;
+      border: none;
+      padding: 4px 5px;
+
+      &:hover, &:focus {
+        color: $black;
+        background: none;
+      }
+
+      &:after {
+        font-family: $font-family-icon;
+        content: "\f078";
+        font-size: 22px;
+      }
+    }
+  }
+
+  .field--name-field-doc.field__items {
+    text-align: right;
+    padding: 15px 0 8px;
+    font-size: 18px;
+    color: #AAA;
+
+    a {
+      color: #AAA;
+      font-size: 12px;
+      font-family: $font-family-monospace;
+    }
+
+    .fa {
+      padding-left: 8px;
+      font-size: 20px;
+      vertical-align: middle;
+    }
+  }
+
+  .field--name-field-x-action {
+    margin-top: 10px;
+  }
+}

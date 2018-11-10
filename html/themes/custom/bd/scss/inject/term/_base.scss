@@ -1,0 +1,119 @@
+.view-mode--vote {
+  background-color: #F0F2F5;
+  margin-bottom: 4px;
+  font-family: $font-family-monospace;
+  position: relative;
+
+  .field--name-taxonomy-term-title {
+    width: 83%;
+
+    a {
+      white-space: nowrap;
+      font-weight: 100;
+      display: block;
+      padding: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      height: 100%;
+      font-size: 12px;
+    }
+  }
+
+  .updown-score {
+    border: none;
+  }
+
+  .vud-widget-updown {
+    height: 32px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 38px;
+    border-left: 4px solid $white;
+    transition: all 0.25s ease 0s;
+
+    &.vote-cast-success {
+      background-color: $yellow;
+
+      .updown-score .updown-current-score {
+        opacity: 1;
+      }
+    }
+
+    .updown-score .updown-current-score {
+      display: block;
+      font-size: 22px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      padding-top: 2px;
+      opacity: 0;
+    }
+
+    &.vote-cast-success {
+      a {
+        opacity: 0;
+      }
+    }
+
+    .up,
+    .down,
+    .reset {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100% !important;
+      height: 100% !important;
+      transform: none !important;
+      border: none !important;
+      font-size: 0;
+      text-align: center;
+    }
+
+    a {
+      background: #C7C8CA;
+      transition: all 0.25s ease 0s;
+
+      &.down,
+      &.active {
+        display: none;
+      }
+
+      &:before {
+        font-family: $font-family-icon;
+        content: "\f0d8" !important;
+        font-size: 24px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -2px;
+        margin: 0 !important;
+        animation: none !important;
+      }
+
+      &:hover {
+        color: $yellow !important;
+        background: #555;
+      }
+
+      &.reset {
+        color: $yellow !important;
+      }
+
+      &.reset:hover {
+        background: $black;
+      }
+
+      &.inactive {
+        color: #555;
+      }
+    }
+  }
+
+}

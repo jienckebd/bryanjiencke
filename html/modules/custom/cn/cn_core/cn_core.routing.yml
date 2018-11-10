@@ -1,0 +1,48 @@
+node.add.anon:
+  path: '/submit/content/{node_type}'
+  defaults:
+    _controller: '\Drupal\cn_core\Controller\Controller::addNode'
+    _title_callback: '\Drupal\node\Controller\NodeController::addPageTitle'
+  requirements:
+    _node_add_access: 'node:{node_type}'
+  options:
+    _admin_route: FALSE
+    parameters:
+      node_type:
+        with_config_overrides: TRUE
+cn_core.entityform.modal:
+  path: '/ajax/modal/entityform/{entity_type}/{bundle}'
+  defaults:
+    _title: 'Form'
+    _controller: '\Drupal\cn_core\Controller\ModalController::entityForm'
+  requirements:
+    _permission: 'access content'
+cn_core.entityform.close_modal:
+  path: '/ajax/modal/close'
+  defaults:
+    _title: 'Close Modal'
+    _controller: '\Drupal\cn_core\Controller\ModalController::closeModal'
+  requirements:
+    _permission: 'access content'
+cn_core.entityform.modal.context:
+  path: '/ajax/modal/entityform/{entity_type}/{bundle}/{context_entity_type}/{context_entity_id}'
+  defaults:
+    _title: 'Form'
+    _controller: '\Drupal\cn_core\Controller\ModalController::entityForm'
+  requirements:
+    _permission: 'access content'
+cn_core.entityform.close_modal:
+  path: '/ajax/modal/close'
+  defaults:
+    _title: 'Close Modal'
+    _controller: '\Drupal\cn_core\Controller\ModalController::closeModal'
+  requirements:
+    _permission: 'access content'
+
+cn_core.entity_view.view_mode:
+  path: '/entity/view/{entity_type}/{entity_id}/{view_mode}'
+  defaults:
+    _title: 'Close Modal'
+    _controller: '\Drupal\cn_core\Controller\EntityViewController::viewDynamicEntity'
+  requirements:
+    _permission: 'access content'

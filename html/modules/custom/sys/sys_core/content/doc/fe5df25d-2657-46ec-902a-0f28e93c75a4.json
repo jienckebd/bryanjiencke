@@ -1,0 +1,113 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/tm.local\/admin\/structure\/eck\/entity\/doc\/1?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/doc\/default"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/doc\/default\/uid": [
+            {
+                "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/doc\/default\/field_content": [
+            {
+                "href": ""
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 1
+        }
+    ],
+    "uuid": [
+        {
+            "value": "fe5df25d-2657-46ec-902a-0f28e93c75a4"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "default"
+        }
+    ],
+    "title": [
+        {
+            "value": "The Recommendation Engine",
+            "lang": "en"
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/doc\/default\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/tm.local\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f95d79ab-5797-429d-8823-da434d2660ef"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/doc\/default\/field_content": [
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/doc"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "0d7d17a3-50f9-4eb9-8d69-21bdda21747d"
+                    }
+                ],
+                "target_revision_id": "51759"
+            }
+        ]
+    },
+    "created": [
+        {
+            "value": 1522159195
+        }
+    ],
+    "changed": [
+        {
+            "value": 1524078663
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "metatag": [
+        {
+            "value": {
+                "title": "| Talking Machines"
+            }
+        }
+    ],
+    "field_icon": [
+        {
+            "font_field_icon": "question-circle-o",
+            "font_field_icon_link": "Questions"
+        }
+    ]
+}

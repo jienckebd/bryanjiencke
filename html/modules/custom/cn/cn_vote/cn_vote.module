@@ -1,0 +1,35 @@
+<?php
+/**
+ * @file
+ * Configuration cn_vote functionality.
+ */
+
+use Drupal\cn_vote\Entity\Vote;
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function cn_vote_entity_type_alter(array &$entity_types) {
+  if (!empty($entity_types['vote'])) {
+    $entity_types['vote']
+      ->setClass(\Drupal\cn_vote\Entity\Vote::class)
+      ->set('field_ui_base_route', 'entity.vote_type.edit_form');
+  }
+
+  if (!empty($entity_types['vote_result'])) {
+    $entity_types['vote_result']
+      ->setClass(\Drupal\cn_vote\Entity\VoteResult::class);
+  }
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function cn_vote_library_info_alter(&$libraries, $extension) {
+
+  if ($extension == 'core' && isset($libraries['jquery.farbtastic'])) {
+    // @todo alter vud libraries instead of patch.
+    return;
+  }
+
+}

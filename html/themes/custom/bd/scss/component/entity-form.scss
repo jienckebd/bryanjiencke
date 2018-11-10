@@ -1,0 +1,193 @@
+// Entity forms.
+@import "../variables";
+
+body.entity-form-route {
+  .page-content {
+    background-color: transparent;
+    padding: 0;
+    margin: 0 0 50px;
+  }
+}
+
+@media
+screen and (min-width: 780px),
+(orientation: landscape) and (min-device-height: 780px) {
+
+  // Entity forms.
+  .form--column--2 {
+    .layout-region-entity-main-inner {
+      column-count: 2;
+      column-gap: 30px;
+
+      > * {
+        break-inside: avoid;
+      }
+    }
+
+    .layout-region-entity-main {
+      width: 80%;
+      float: left;
+    }
+
+    .layout-region-entity-secondary {
+      width: 20%;
+      float: left;
+      position: relative;
+
+      .form-actions {
+        margin: 0;
+        background: #333;
+        padding: 0 0 15px;
+      }
+
+      .description {
+        color: #DDD;
+      }
+
+      .form-disabled label {
+        color: #DDD;
+      }
+
+      .layout-filler {
+        background: #333;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 20%;
+        z-index: 1;
+      }
+
+      .entity-meta {
+        position: relative;
+        z-index: 2;
+      }
+    }
+  }
+
+  .messages {
+    margin: 15px !important;
+  }
+
+  .layout-region-entity-secondary-inner {
+    padding: 0 15px;
+  }
+
+  .layout-region-entity-footer {
+    clear: both;
+    width: 80%;
+    padding: 0 15px;
+  }
+}
+
+.ui-dialog {
+  .layout-region-entity-main {
+    width: 100%;
+  }
+}
+
+.entity-browser-iframe-container {
+  z-index: 0;
+  width: 100% !important;
+}
+
+.entity-browser-form {
+  padding: 15px;
+
+  > .eb-tabs {
+    margin: -15px -15px 15px;
+  }
+}
+
+.ui-dialog {
+  .entity-form {
+    padding: 30px;
+
+    .form-type-textfield > label,
+    .fieldset-legend,
+    .field--type-boolean label,
+    .form-type-select > label,
+    .form-type-textarea > label,
+    .form-type-managed-file > label,
+    .form-type-entity-autocomplete > label {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .field--type-boolean .description {
+      margin-left: 30px;
+      color: $black;
+    }
+
+    div[data-drupal-selector="edit-field-address-0-address-country-code"] {
+      display: none;
+    }
+
+    .field--name-field-image {
+      margin: 0;
+
+      table,
+      td,
+      th,
+      tr {
+        background: transparent !important;
+      }
+
+      thead {
+        border: none;
+      }
+
+      .description,
+      .field-add-more-submit,
+      h4,
+      td.field-multiple-drag {
+        display: none;
+      }
+    }
+
+    .panel.field-group-details {
+      border-top: 7px solid $yellow !important;
+      background-color: $white;
+      margin-bottom: 30px;
+      border-radius: 3px;
+    }
+
+    .form-inline > .form-item {
+      display: inline-block;
+    }
+
+    .field--name-field-date {
+      margin-top: 12px;
+    }
+
+    .form-item-field-image-0-inline-entity-form-image-0-alt {
+      display: none;
+    }
+  }
+}
+
+.node-article-anonymous-form.node-form {
+  .form-item-field-content-0-subform-field-name-0-value {
+    display: none;
+  }
+
+  .paragraphs-dropbutton-wrapper {
+    display: none;
+  }
+
+  .field-multiple-drag {
+    display: none;
+  }
+
+  td {
+    background: #F0F2F5 !important;
+  }
+
+  th {
+    padding: 0 !important;
+  }
+
+  .paragraphs-subform label {
+    display: none;
+  }
+}

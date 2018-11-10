@@ -1,0 +1,92 @@
+uuid: 6d3182f4-504a-47ba-bc63-9a43384a0c15
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.rich_text
+  module:
+    - ckeditor
+_core:
+  default_config_hash: 0bVELtfx9sXhjZ6s6W-dJo8SW-IR9jiEIEylzm-2Cro
+format: rich_text
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Italic
+            - Underline
+            - Strike
+            - Superscript
+            - Subscript
+            - '-'
+            - RemoveFormat
+        -
+          name: Alignment
+          items:
+            - JustifyLeft
+            - JustifyCenter
+            - JustifyRight
+            - JustifyBlock
+        -
+          name: Font
+          items:
+            - Font
+            - FontSize
+            - TextColor
+            - BGColor
+        -
+          name: Linking
+          items:
+            - DrupalLink
+            - DrupalUnlink
+            - Linkit
+        -
+          name: Lists
+          items:
+            - BulletedList
+            - NumberedList
+            - Indent
+            - Outdent
+        -
+          name: Media
+          items:
+            - media_browser
+            - node
+            - Blockquote
+            - Table
+            - HorizontalRule
+        -
+          name: 'Block Formatting'
+          items:
+            - Format
+            - Styles
+        -
+          name: Tools
+          items:
+            - PasteFromWord
+            - SpecialChar
+            - ShowBlocks
+            - Source
+            - Maximize
+  plugins:
+    language:
+      language_list: un
+    stylescombo:
+      styles: ''
+    colorbutton:
+      colors: ''
+    linkit:
+      linkit_profile: default
+image_upload:
+  status: true
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

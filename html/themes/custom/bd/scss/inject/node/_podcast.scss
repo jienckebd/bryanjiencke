@@ -1,0 +1,55 @@
+// Episode Recent Block
+//
+// Styling for episode recent.
+
+.awp.awp-medium.awp-container.awp-responsive {
+  background-color: #1d2b34;
+}
+
+.art19-web-player .awp .awp-control, .art19-web-player .awp .awp-overlay-episode-description a, div.art19-web-player .awp .awp-control, div.art19-web-player .awp .awp-overlay-episode-description a {
+  color: $yellow !important;
+}
+
+.art19-web-player .awp .awp-progress .ui-slider-range, .art19-web-player .awp .awp-volume-slider .ui-slider-range, div.art19-web-player .awp .awp-progress .ui-slider-range, div.art19-web-player .awp .awp-volume-slider .ui-slider-range {
+  background-color: $yellow;
+}
+
+.awp-media-share {
+  position: absolute;
+  visibility: hidden !important;
+}
+
+@media (max-width: 960px) {
+  .art19-web-player.awp-medium .awp-left, .art19-web-player.awp-medium-alt .awp-left, div.art19-web-player.awp-medium .awp-left, div.art19-web-player.awp-medium-alt .awp-left {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden;
+  }
+}
+
+.bundle--podcast.view-mode--related {
+
+  .h5 {
+    margin: 7px 7px 10px;
+  }
+
+  .awp-left img {
+    display: none !important;
+  }
+
+  .art19-player {
+    height: 140px;
+    overflow: hidden;
+  }
+
+  .art19-web-player.awp-medium .awp-play-toggle, .art19-web-player.awp-medium .awp-play-toggle:active, .art19-web-player.awp-medium .awp-play-toggle:focus, .art19-web-player.awp-medium .awp-play-toggle:hover, .art19-web-player.awp-medium-alt .awp-play-toggle, .art19-web-player.awp-medium-alt .awp-play-toggle:active, .art19-web-player.awp-medium-alt .awp-play-toggle:focus, .art19-web-player.awp-medium-alt .awp-play-toggle:hover, div.art19-web-player.awp-medium .awp-play-toggle, div.art19-web-player.awp-medium .awp-play-toggle:active, div.art19-web-player.awp-medium .awp-play-toggle:focus, div.art19-web-player.awp-medium .awp-play-toggle:hover, div.art19-web-player.awp-medium-alt .awp-play-toggle, div.art19-web-player.awp-medium-alt .awp-play-toggle:active, div.art19-web-player.awp-medium-alt .awp-play-toggle:focus, div.art19-web-player.awp-medium-alt .awp-play-toggle:hover {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .art19-web-player.awp-medium-alt.awp-size-4 .awp-media-controls, .art19-web-player.awp-medium.awp-size-4 .awp-media-controls, div.art19-web-player.awp-medium-alt.awp-size-4 .awp-media-controls, div.art19-web-player.awp-medium.awp-size-4 .awp-media-controls {
+    top: -12px;
+  }
+}
