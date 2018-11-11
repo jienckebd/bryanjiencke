@@ -56,6 +56,7 @@ before_install:
 install:
   - source ${BLT_DIR}/scripts/travis/setup_environment
   - source ${BLT_DIR}/scripts/travis/setup_project
+  - drush si social --yes
 
 script:
   - blt tests:all --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --environment=ci --yes --verbose
