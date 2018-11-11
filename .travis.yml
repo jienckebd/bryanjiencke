@@ -58,7 +58,7 @@ install:
   - source ${BLT_DIR}/scripts/travis/setup_project
 
 script:
-  - source ${BLT_DIR}/scripts/travis/run_tests
+  - blt tests:all --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --environment=ci --yes --verbose
 
 # The version below MUST match the php version indicated at the top of this file, otherwise the artifact won't build.
 deploy:
