@@ -1,15 +1,14 @@
-# Default settings should not be located here. This file is only used to
-# override existing settings. If your theme is the one that introduces a new
-# theme setting, it should use the Drupal Bootstrap base theme's
-# @BootstrapSetting annotation discovery process. This ensures that sub-theme
-# settings are inherited from base themes themes properly and to determine when
-# a setting should be saved to config as "overridden".
-#
-# @see \Drupal\bootstrap\Plugin\SettingBase
-# @see \Drupal\bootstrap\Plugin\SettingInterface
-# @see \Drupal\bootstrap\Plugin\SettingManager
-# @see \Drupal\bootstrap\Plugin\Form\SystemThemeSettings
-# @see \Drupal\bootstrap\ThemeSettings
-
-# Disable the CDN provider so compiled source files can be used.
-cdn_provider: ''
+font_primary: 'Montserrat'
+card_radius: '10'
+form_control_radius: '5'
+button_radius: '10'
+color_primary: '#29abe2'
+color_secondary: '#1f80aa'
+color_accent: '#ffc142'
+color_link: '#33b5e5'
+color_navbar_bg: '#333333'
+color_navbar_text: '#ffffff'
+color_navbar_active_bg': '#1f1f1f'
+color_navbar_active_text': '#f3f3f3'
+color_navbar_sec_bg': '#1f7ea7'
+color_navbar_sec_text': '#f9f9f9'

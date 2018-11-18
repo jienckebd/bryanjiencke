@@ -1,59 +1,80 @@
-<!-- @file Instructions for subtheming using the Sass Starterkit. -->
-<!-- @defgroup sub_theming_sass -->
-<!-- @ingroup sub_theming -->
-# Sass Starterkit
+# Social Blue
+Social Blue is made to provide as a demo as well as a default style for Open
+Social. This is a sub theme of socialbase.
 
-Below are instructions on how to create a Bootstrap sub-theme using a Sass
-preprocessor.
+Social Blue uses Gulp.js as a task runner, so that it can do many tasks
+automatically:
+ - Build CSS from your Sass using libSass and node-sass.
+ - Add vendor prefixes for the browsers you want to support using Autoprefixer.
+ - Build a style guide of your components with KSS-Node.
+ - Watch all of your files as you develop and re-build everything on the fly.
+ - Set up to deploy your style guide to a custom location
 
-- [Prerequisites](#prerequisites)
-- [Additional Setup](#setup)
-- [Overrides](#overrides)
+# What can I do with this theme?
+The safest and fastest way to get started is to duplicate this theme and rename
+it to your custom theme name. You need to make sure all instances of
+'socialblue' are renamed to guarantee a proper working theme. Socialblue itself
+will be updated in the future with new features, so it is best not to make
+changes. You might lose it when updating.
 
-## Prerequisites
-- Read the @link getting_started Getting Started @endlink and
-  @link sub_theming Sub-theming @endlink documentation topics.
-- You must understand the basic concept of using the [Sass] CSS pre-processor.
-- You must use a **[local Sass compiler](https://www.google.com/search?q=sass+compiler)**.
-- You must use the [Bootstrap Framework Source Files] ending in the `.scss`
-  extension, not files ending in `.css`.
+If you want to utilise the gulp plugins we have provided you need to install the
+plugins again, via `yarn install` (which will read the package.json file).
 
-## Additional Setup {#setup}
-Download and extract the **latest** 3.x.x version of
-[Bootstrap Framework Source Files] into the root of your new sub-theme. After
-it has been extracted, the directory should be renamed (if needed) so it reads
-`./THEMENAME/bootstrap`.
+As you can see in the info file, we are mostly extending the socialbase
+libraries with the socialblue variant. This means there is a relation between
+the two and because we load some libraries via twig files conditionally this
+ensure we are not forgetting to load the 'styling' layer for a component.
 
-If for whatever reason you have an additional `bootstrap` directory wrapping the
-first `bootstrap` directory (e.g. `./THEMENAME/bootstrap/bootstrap`), remove the
-wrapping `bootstrap` directory. You will only ever need to touch these files if
-or when you upgrade your version of the [Bootstrap Framework].
+You can override template files just like in any other theme. Just create a
+`templates` folder and put you new template files there.
 
-{.alert.alert-warning} **WARNING:** Do not modify the files inside of
-`./THEMENAME/bootstrap` directly. Doing so may cause issues when upgrading the
-[Bootstrap Framework] in the future.
 
-## Overrides {#overrides}
-The `./THEMENAME/scss/_default-variables.scss` file is generally where you will
-spend the majority of your time providing any default variables that should be
-used by the [Bootstrap Framework] instead of its own.
 
-The `./THEMENAME/scss/overrides.scss` file contains various Drupal overrides to
-properly integrate with the [Bootstrap Framework]. It may contain a few
-enhancements, feel free to edit this file as you see fit.
+Any questions or feedback?
+[Create an issue on drupal.org](https://www.drupal.org/project/issues/social)
 
-The `./THEMENAME/scss/style.scss` file is the glue that combines:
-`_default-variables.scss`, [Bootstrap Framework Source Files] and the 
-`overrides.scss` file together. Generally, you will not need to modify this
-file unless you need to add or remove files to be imported. This is the file
-that you should compile to `./THEMENAME/css/style.css` (note the same file
-name, using a different extension of course).
 
-#### See also:
-- @link theme_settings Theme Settings @endlink
-- @link templates Templates @endlink
-- @link plugins Plugin System @endlink
+# Getting started with your sub theme 
 
-[Bootstrap Framework]: https://getbootstrap.com/docs/3.3/
-[Bootstrap Framework Source Files]: https://github.com/twbs/bootstrap-sass
-[Sass]: http://sass-lang.com
+### Drupal settings
+Before you start theming there are a few things that might be convenient. In
+html/sites/default there is a services.yml file. Make sure to set
+* twig.config -> debug: true
+* twig.config -> auto_reload: true
+* twig.config -> cache: false
+
+Also in sites default you will find an example.settings.local.php file.
+Duplicate this file and remove the example part. After you have configured these
+files you need to rebuild the caches. This will speed up you development
+process.
+
+### Working with Gulp
+
+1. [Install Yarn](https://yarnpkg.com/en/docs/install), see their website for
+documentation
+
+2. Install the gulp-cli tool globally. Normally, installing a Node.js globally
+  is not recommended, which is why both Gulp and Grunt have created wrapper
+  commands that will allow you to run "gulp" or "grunt" from anywhere, while
+  using the local version of gulp or grunt that is installed in your project.
+  To install gulp's global wrapper, run:
+    ```
+    npm install -g gulp-cli
+
+3. The package.json file contains the versions of all the node packages you
+need. To install them run:
+    ```
+    yarn install
+    ```
+    
+4. Set the URL used to access the Drupal website under development. Edit your
+    gulpfile.js file and change the options.drupalURL setting:
+    ```
+    options.drupalURL = 'http://localhost';
+    ```
+
+4. There are different gulp tasks. What each gulp task does is described in the
+gulpfile with the task itself. To run a gulp task, type:
+    ```
+    gulp [taskname]
+    ```
