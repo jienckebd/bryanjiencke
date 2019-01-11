@@ -1,41 +1,6 @@
-name: 'Sys Core'
+name: 'Sys: Core'
 core: 8.x
 type: module
-description: 'Collective Next core.'
+description: 'System Specific: Core'
 version: '8.x-1.0.0'
 package: Sys
-
-default_content:
-  node:
-    - e185db9c-77a7-4a26-ab4c-0f76f003ee1f
-    - 8fe34217-8645-4998-850e-a3c9d5bbdeff
-  block_content:
-    - d3d72da2-88b3-4494-b6e8-c02df2aed275
-    - ba252201-6dd0-4cb5-b64f-d3a6746624b9
-    - 8836e97c-39da-4ea1-9452-94844ab0d911
-  paragraph:
-    - c05a9a75-c6d3-4858-b48a-11b388e90c12
-    - 0d7d17a3-50f9-4eb9-8d69-21bdda21747d
-  doc:
-    - fe5df25d-2657-46ec-902a-0f28e93c75a4
-  media:
-    - 786e75f7-f82f-4421-86d9-880911fab355
-    - b8a918c5-cec4-407b-87dd-7017136c272f
-  file:
-    - ee4682b6-184c-4f20-93a7-849bb78067de
-    - 35ecc437-febb-47f5-97d8-e10781260237
-    - f7d95a8e-b928-49d5-80f4-354b8d1ef561
-    - 422b3593-0d24-4760-87b2-5801c7c0152c
-  entity_subqueue:
-    - c7db25d1-a7fe-48b0-959c-e4357321f723
-    - 66eb8e33-5b31-4bab-b7a9-203f6ffabad3
-  autoref:
-    - fe6015c4-94d7-4e00-82d4-bfe0080dcbed
-  feeds_feed:
-    - 28681aeb-e7d2-41de-aa05-f4de246a840f
-    - c8b5f559-d62a-4ce7-86f7-dafd583e5144
-    - 550349ea-716b-4c85-bca1-e1de193092ea
-  feeds_crawler:
-    - 997d40c3-2c39-4e17-9736-ee7c469d0ac3
-    - d6699d3e-161c-4829-bac9-c740336409c1
-    - be1b5e07-19a2-4a91-95f0-b6203886b5ac

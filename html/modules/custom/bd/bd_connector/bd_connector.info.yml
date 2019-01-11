@@ -1,0 +1,6 @@
+name: 'BD  Connector'
+core: 8.x
+type: module
+description: 'Connects a Drupal system to the BD hub.'
+version: '8.x-1.0.0'
+package: BD

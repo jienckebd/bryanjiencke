@@ -36,13 +36,13 @@ options.rootPath = {
   project     : __dirname + '/',
   styleGuide  : __dirname + '/styleguide/',
   theme       : __dirname + '/',
-  basetheme   : __dirname + '/../socialbase/',
+  basetheme   : __dirname + '/../../../profiles/contrib/social/themes/socialbase/',
   drupal      : __dirname + '/../../../../../core/',
   libraries   : __dirname + '/../../../../../libraries/'
 };
 
 options.theme = {
-  name       : 'socialblue',
+  name       : 'bd',
   root       : options.rootPath.theme,
   components : options.rootPath.theme + 'components/',
   build      : options.rootPath.theme + 'assets/',
