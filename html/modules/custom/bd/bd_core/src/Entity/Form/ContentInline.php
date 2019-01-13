@@ -9,7 +9,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 /**
  * Node inline form handler.
  */
-class ContentEntityFormInline extends EntityInlineForm {
+class ContentInline extends EntityInlineForm {
 
   use StringTranslationTrait;
 

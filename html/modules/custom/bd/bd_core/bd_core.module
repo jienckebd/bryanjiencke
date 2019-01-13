@@ -21,65 +21,6 @@ use Drupal\Core\Database\Query\AlterableInterface;
 require_once "bd_core.theme.inc";
 
 /**
- * Implements hook_entity_type_alter().
- */
-function bd_core_entity_type_alter(array &$entity_types) {
-  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
-  $entity_types['node']->setFormClass('default', \Drupal\bd_core\Form\ContentEntityForm::class);
-  $entity_types['node']->setFormClass('anonymous', \Drupal\bd_core\Form\ContentEntityForm::class);
-  $entity_types['node']->setFormClass('modal', \Drupal\bd_core\Form\ContentEntityFormModal::class);
-  $entity_types['node']->setFormClass('add', \Drupal\bd_core\Form\ContentEntityForm::class);
-  $entity_types['node']->setFormClass('edit', \Drupal\bd_core\Form\ContentEntityForm::class);
-
-  // $entity_types['user']->setFormClass('default', \Drupal\bd_core\Form\ContentEntityForm::class);
-
-  if (!empty($entity_types['media'])) {
-    $entity_types['media']->setFormClass('default', \Drupal\bd_core\Form\ContentEntityForm::class);
-    $entity_types['media']->setFormClass('add', \Drupal\bd_core\Form\ContentEntityForm::class);
-    $entity_types['media']->setFormClass('edit', \Drupal\bd_core\Form\ContentEntityForm::class);
-  }
-
-  if (!empty($entity_types['taxonomy_term'])) {
-
-    $entity_type_id = 'taxonomy_term';
-
-    $entity_types['taxonomy_term']->setClass(\Drupal\bd_core\Entity\NormalizedContentEntity::class);
-    $entity_keys = $entity_types['taxonomy_term']->getKeys();
-    $entity_keys['published'] = 'status';
-    $entity_keys['revision'] = 'revision_id';
-    $entity_types['taxonomy_term']->set('entity_keys', $entity_keys);
-
-    $base_table = $entity_types['taxonomy_term']->getBaseTable();
-    $data_table = $entity_types['taxonomy_term']->getDataTable();
-    $entity_types['taxonomy_term']->set('revision_table', "{$entity_type_id}_revision");
-    $entity_types['taxonomy_term']->set('revision_data_table', "{$entity_type_id}_field_revision");
-
-    $revision_metadata_keys = [
-      'revision_log_message' => 'revision_log',
-      'revision_created' => 'revision_timestamp',
-      'revision_user' => 'revision_uid',
-      'revision_default' => 'revision_default',
-    ];
-    $entity_types['taxonomy_term']->set('revision_metadata_keys', $revision_metadata_keys);
-
-    $entity_types['taxonomy_term']->addConstraint('UniqueEntityLabel');
-  }
-
-  foreach ($entity_types as $key => $entity_type) {
-    $link_templates = $entity_type->getLinkTemplates();
-    if (!empty($link_templates['canonical'])) {
-      $entity_type->setLinkTemplate('view_mode', '/entity/view/{entity_type}/{entity_id}/{view_mode}');
-    }
-  }
-
-  foreach ($entity_types as $key => $entity_type) {
-    if ($entity_type->getDataTable()) {
-      $entity_types[$key]->setFormClass('modal', \Drupal\bd_core\Form\ContentEntityFormModal::class);
-    }
-  }
-}
-
-/**
  * Implements hook_entity_base_field_info().
  */
 function bd_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {

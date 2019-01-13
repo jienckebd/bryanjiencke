@@ -27,7 +27,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Form handler for the node edit forms.
  */
-class ContentEntityForm extends Base {
+class Content extends Base {
 
   /**
    * The tempstore factory.

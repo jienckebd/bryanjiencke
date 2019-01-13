@@ -12,7 +12,7 @@ use Drupal\Component\Utility\Html;
 /**
  * Form handler for modal forms.
  */
-class ContentEntityFormModal extends ContentEntityForm {
+class ContentModal extends Content {
 
   /**
    * @param array $form
