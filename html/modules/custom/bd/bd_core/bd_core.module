@@ -25,11 +25,11 @@ require_once "bd_core.theme.inc";
  */
 function bd_core_entity_type_alter(array &$entity_types) {
   /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
-  $entity_types['node']->setFormClass('default', \Drupal\bd_core\Form\NodeForm::class);
-  $entity_types['node']->setFormClass('anonymous', \Drupal\bd_core\Form\NodeForm::class);
-  $entity_types['node']->setFormClass('modal', \Drupal\bd_core\Form\ModalNodeForm::class);
-  $entity_types['node']->setFormClass('add', \Drupal\bd_core\Form\NodeForm::class);
-  $entity_types['node']->setFormClass('edit', \Drupal\bd_core\Form\NodeForm::class);
+  $entity_types['node']->setFormClass('default', \Drupal\bd_core\Form\ContentEntityForm::class);
+  $entity_types['node']->setFormClass('anonymous', \Drupal\bd_core\Form\ContentEntityForm::class);
+  $entity_types['node']->setFormClass('modal', \Drupal\bd_core\Form\ContentEntityFormModal::class);
+  $entity_types['node']->setFormClass('add', \Drupal\bd_core\Form\ContentEntityForm::class);
+  $entity_types['node']->setFormClass('edit', \Drupal\bd_core\Form\ContentEntityForm::class);
 
   // $entity_types['user']->setFormClass('default', \Drupal\bd_core\Form\ContentEntityForm::class);
 
@@ -37,19 +37,31 @@ function bd_core_entity_type_alter(array &$entity_types) {
     $entity_types['media']->setFormClass('default', \Drupal\bd_core\Form\ContentEntityForm::class);
     $entity_types['media']->setFormClass('add', \Drupal\bd_core\Form\ContentEntityForm::class);
     $entity_types['media']->setFormClass('edit', \Drupal\bd_core\Form\ContentEntityForm::class);
-    $entity_types['media']->setHandlerClass('inline_form', \Drupal\bd_core\Form\MediaInlineForm::class);
-  }
-
-  if (!empty($entity_types['contact_message'])) {
-    $entity_types['contact_message']->setFormClass('default', \Drupal\bd_core\Form\MessageForm::class);
   }
 
   if (!empty($entity_types['taxonomy_term'])) {
-    $entity_types['taxonomy_term']->setFormClass('default', \Drupal\bd_core\Form\TermForm::class);
-    $entity_types['taxonomy_term']->setClass(\Drupal\bd_core\Entity\Term::class);
-    $term_keys = $entity_types['taxonomy_term']->getKeys();
-    $term_keys['published'] = 'status';
-    $entity_types['taxonomy_term']->set('entity_keys', $term_keys);
+
+    $entity_type_id = 'taxonomy_term';
+
+    $entity_types['taxonomy_term']->setClass(\Drupal\bd_core\Entity\NormalizedContentEntity::class);
+    $entity_keys = $entity_types['taxonomy_term']->getKeys();
+    $entity_keys['published'] = 'status';
+    $entity_keys['revision'] = 'revision_id';
+    $entity_types['taxonomy_term']->set('entity_keys', $entity_keys);
+
+    $base_table = $entity_types['taxonomy_term']->getBaseTable();
+    $data_table = $entity_types['taxonomy_term']->getDataTable();
+    $entity_types['taxonomy_term']->set('revision_table', "{$entity_type_id}_revision");
+    $entity_types['taxonomy_term']->set('revision_data_table', "{$entity_type_id}_field_revision");
+
+    $revision_metadata_keys = [
+      'revision_log_message' => 'revision_log',
+      'revision_created' => 'revision_timestamp',
+      'revision_user' => 'revision_uid',
+      'revision_default' => 'revision_default',
+    ];
+    $entity_types['taxonomy_term']->set('revision_metadata_keys', $revision_metadata_keys);
+
     $entity_types['taxonomy_term']->addConstraint('UniqueEntityLabel');
   }
 
@@ -62,7 +74,7 @@ function bd_core_entity_type_alter(array &$entity_types) {
 
   foreach ($entity_types as $key => $entity_type) {
     if ($entity_type->getDataTable()) {
-      $entity_types[$key]->setFormClass('modal', \Drupal\bd_core\Form\ModalContentEntityForm::class);
+      $entity_types[$key]->setFormClass('modal', \Drupal\bd_core\Form\ContentEntityFormModal::class);
     }
   }
 }
@@ -405,38 +417,7 @@ function bd_core_library_info_alter(&$libraries, $extension) {
     ];
 
   }
-  elseif ($extension == 'font_field_icon') {
-    unset($libraries['font_field_icon']['css']['component']);
-  }
-  elseif ($extension == 'seven') {
-    $admin_theme_path = drupal_get_path('theme', 'tm_theme_admin');
 
-    $new_path = "/{$admin_theme_path}/css/base/elements.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['base'], 'css/base/elements.css', $new_path);
-
-    $new_path = "/{$admin_theme_path}/css/components/entity-meta.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['component'], 'css/components/entity-meta.css', $new_path);
-
-    $new_path = "/{$admin_theme_path}/css/components/form.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['component'], 'css/components/form.css', $new_path);
-
-    $new_path = "/{$admin_theme_path}/css/components/tabs.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['component'], 'css/components/tabs.css', $new_path);
-
-    $new_path = "/{$admin_theme_path}/css/components/buttons.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['component'], 'css/components/buttons.css', $new_path);
-
-    $new_path = "/{$admin_theme_path}/css/components/breadcrumb.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['component'], 'css/components/breadcrumb.css', $new_path);
-
-    $new_path = "/{$admin_theme_path}/css/layout/layout.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['layout'], 'css/layout/layout.css', $new_path);
-  }
-  elseif ($extension == 'adminimal_theme') {
-    $admin_theme_path = drupal_get_path('theme', 'tm_theme_admin');
-    $new_path = "/{$admin_theme_path}/css/adminimal.css";
-    bd_core_array_change_key($libraries['global-styling']['css']['base'], 'css/adminimal.css', $new_path);
-  }
 }
 
 /**

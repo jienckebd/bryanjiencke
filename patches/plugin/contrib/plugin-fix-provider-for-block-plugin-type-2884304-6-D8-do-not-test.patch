@@ -1,0 +1,13 @@
+diff --git a/plugin.plugin_type.yml b/plugin.plugin_type.yml
+index 41411df..3db023f 100644
+--- a/plugin.plugin_type.yml
++++ b/plugin.plugin_type.yml
+@@ -102,7 +102,7 @@ aggregator_processor:
+ # Block's plugin types.
+ block:
+   label: Block
+-  provider: block
++  provider: core
+   plugin_manager_service_id: plugin.manager.block
+   plugin_definition_decorator_class: \Drupal\plugin\PluginDefinition\BlockPluginDefinitionDecorator
+   plugin_configuration_schema_id: block.settings.[plugin_id]

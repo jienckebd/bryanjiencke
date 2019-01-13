@@ -1,0 +1,15 @@
+attribute.settings:
+  title: 'Attribute Settings'
+  parent: system.admin_config_system
+  description: 'Configure the behavior of Attributes.'
+  route_name: attribute.settings
+
+entity.attribute_type.collection:
+  title: 'Attribute Types'
+  parent: system.admin_structure
+  description: 'Create and manage fields, forms, and display settings for your attributes.'
+  route_name: entity.attribute_type.collection
+
+entity.attribute.add_page:
+  title: 'Add Attribute'
+  route_name: entity.attribute.add_page

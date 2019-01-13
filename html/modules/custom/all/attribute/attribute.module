@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Module file for attribute API.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\attribute\AttributeInterface;
+
+/**
+ * Implements hook_preprocess_HOOK() for HTML document templates.
+ *
+ * Adds body classes if certain regions have content.
+ */
+function attribute_preprocess_html(&$variables) {
+
+  /** @var \Drupal\Core\Routing\CurrentRouteMatch $route_match */
+  $route_match = \Drupal::routeMatch();
+
+  /** @var \Drupal\attribute\AttributeManager $attribute_manager */
+  $attribute_manager = \Drupal::service('attribute.manager');
+
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+  $entity_type_manager = \Drupal::service('entity_type.manager');
+
+  foreach ($route_match->getParameters() as $route_param) {
+    if ($route_param instanceof ContentEntityInterface) {
+
+      $entity_type_id = $route_param->getEntityTypeId();
+      $bundle = $route_param->bundle();
+      $attribute_fields = $attribute_manager->getAttributeFields();
+      $entity_fields = $route_param->getFieldDefinitions();
+
+      // @todo check for non-bundled entity types.
+      if (empty($attribute_fields[$entity_type_id][$bundle])) {
+        continue;
+      }
+
+      $attribute_fields_on_this_entity = array_intersect(array_keys($entity_fields), array_keys($attribute_fields[$entity_type_id][$bundle]));
+      if (!empty($attribute_fields_on_this_entity)) {
+        foreach ($attribute_fields_on_this_entity as $attribute_field) {
+
+          // Loop through all attribute references.
+          foreach ($route_param->get($attribute_field)->getValue() as $field_value) {
+            $attribute_entity = $entity_type_manager->getStorage('attribute')->load($field_value['target_id']);
+            if ($attribute_entity instanceof AttributeInterface) {
+              $classes = $attribute_entity->get('field_class')->getValue();
+              if (!empty($classes)) {
+                foreach ($classes as $class) {
+                  $variables['attributes']['class'][] = !empty($class['value']) ? $class['value'] : NULL;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

@@ -1,0 +1,199 @@
+diff --git a/src/Form/FlexiformEntityFormDisplayEditForm.php b/src/Form/FlexiformEntityFormDisplayEditForm.php
+index 20b0349..71fb722 100644
+--- a/src/Form/FlexiformEntityFormDisplayEditForm.php
++++ b/src/Form/FlexiformEntityFormDisplayEditForm.php
+@@ -28,6 +28,8 @@ class FlexiformEntityFormDisplayEditForm extends EntityFormDisplayEditForm {
+    */
+   public function form(array $form, FormStateInterface $form_state) {
+     $form = parent::form($form, $form_state);
++    $form['#entity_type'] = $this->entity->getTargetEntityTypeId();
++    $form['#bundle'] = $this->entity->getTargetBundle();
+     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
+     $form['#attached']['library'][] = 'core/drupal.ajax';
+ 
+diff --git a/src/MockEntity.php b/src/MockEntity.php
+new file mode 100644
+index 0000000..0eaccad
+--- /dev/null
++++ b/src/MockEntity.php
+@@ -0,0 +1,32 @@
++<?php
++
++namespace Drupal\flexiform\src;
++
++use Drupal\Core\Entity\ContentEntityBase;
++use Drupal\Core\Entity\EntityTypeInterface;
++use Drupal\Core\Entity\FieldableEntityInterface;
++
++class MockEntity extends ContentEntityBase implements FieldableEntityInterface {
++
++  /**
++   * @inheritDoc
++   */
++  public function __construct($entity_type, $bundle = FALSE, $translations = []) {
++    $this->entityTypeId = $entity_type;
++    $this->bundle = $bundle ?: $this->entityTypeId;
++  }
++
++  /**
++   * @inheritDoc
++   */
++  public function bundle() {
++    return $this->bundle;
++  }
++
++  /**
++   * @inheritDoc
++   */
++  public function getEntityTypeId() {
++    return $this->entityTypeId;
++  }
++}
+\ No newline at end of file
+diff --git a/src/Plugin/Deriver/EntityFormBlockDeriver.php b/src/Plugin/Deriver/EntityFormBlockDeriver.php
+index d72ff74..b20294e 100644
+--- a/src/Plugin/Deriver/EntityFormBlockDeriver.php
++++ b/src/Plugin/Deriver/EntityFormBlockDeriver.php
+@@ -12,6 +12,8 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Drupal\Core\StringTranslation\TranslationInterface;
+ use Drupal\flexiform\FlexiformEntityFormDisplay;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\Core\Logger\LoggerChannelFactoryInterface;
++use Drupal\flexiform\src\MockEntity;
+ 
+ /**
+  * Provides a deriver class.
+@@ -41,6 +43,11 @@ class EntityFormBlockDeriver extends DeriverBase implements ContainerDeriverInte
+    */
+   protected $entityBundleInfo;
+ 
++  /**
++   * @var \Drupal\Core\Logger\LoggerChannelInterface
++   */
++  protected $logger;
++
+   /**
+    * Constructs new EntityViewDeriver.
+    *
+@@ -57,12 +64,14 @@ class EntityFormBlockDeriver extends DeriverBase implements ContainerDeriverInte
+     EntityTypeManagerInterface $entity_manager,
+     TranslationInterface $string_translation,
+     EntityDisplayRepositoryInterface $entity_display_repository,
+-    EntityTypeBundleInfoInterface $entity_bundle_info
++    EntityTypeBundleInfoInterface $entity_bundle_info,
++    LoggerChannelFactoryInterface $logger
+   ) {
+     $this->entityBundleInfo = $entity_bundle_info;
+     $this->entityDisplayRepository = $entity_display_repository;
+     $this->entityTypeManager = $entity_manager;
+     $this->stringTranslation = $string_translation;
++    $this->logger = $logger->get('flexiform');
+   }
+ 
+   /**
+@@ -73,7 +82,8 @@ class EntityFormBlockDeriver extends DeriverBase implements ContainerDeriverInte
+       $container->get('entity_type.manager'),
+       $container->get('string_translation'),
+       $container->get('entity_display.repository'),
+-      $container->get('entity_type.bundle.info')
++      $container->get('entity_type.bundle.info'),
++      $container->get('logger.factory')
+     );
+   }
+ 
+@@ -89,46 +99,58 @@ class EntityFormBlockDeriver extends DeriverBase implements ContainerDeriverInte
+       }
+ 
+       foreach ($this->entityBundleInfo->getBundleInfo($entity_type_id) as $bundle => $bundle_info) {
+-        $values = [];
+-        if ($entity_type->hasKey('bundle')) {
+-          $values[$entity_type->getKey('bundle')] = $bundle;
+-        }
+-        $entity = $this->entityTypeManager->getStorage($entity_type_id)->create($values);
+-
+-        foreach ($this->entityDisplayRepository->getFormModeOptions($entity_type_id) as $mode_name => $mode_label) {
+-          /* @var \Drupal\flexiform\FlexiformEntityFormDisplayInterface $entity_form_display */
+-          $entity_form_display = FlexiformEntityFormDisplay::collectRenderDisplay($entity, $mode_name);
+-          $plugin_id = "{$entity_type_id}.{$bundle}.{$mode_name}";
+-          $this->derivatives[$plugin_id] = [
+-            'admin_label' => $this->t(
+-              '@entity_type (@bundle) @mode form',
+-              [
+-                '@entity_type' => $entity_type->getLabel(),
+-                '@bundle' => $bundle_info['label'],
+-                '@mode' => $mode_label,
+-              ]
+-            ),
+-            'entity_type' => $entity_type_id,
+-            'bundle' => $bundle,
+-            'form_mode' => $mode_name,
+-            'context' => [
+-              'entity' => new ContextDefinition(
+-                'entity:' . $entity_type_id,
+-                $this->t('Base @entity_type', ['@entity_type' => $entity_type->getLabel()])
++        try {
++          // We need an entity object to pass to FlexiformEntityFormDisplay::collectRenderDisplay.
++          // But collectRenderDisplay() only utilizes entity_type & bundle.
++          // So we can create a light-weight mock object for this purpose.
++          // As long as it implements FieldableEntityInterface
++          $entity = new MockEntity($entity_type, $bundle);
++
++          foreach ($this->entityDisplayRepository->getFormModeOptions($entity_type_id) as $mode_name => $mode_label) {
++            /* @var \Drupal\flexiform\FlexiformEntityFormDisplayInterface $entity_form_display */
++            $entity_form_display = FlexiformEntityFormDisplay::collectRenderDisplay($entity, $mode_name);
++            $plugin_id = "{$entity_type_id}.{$bundle}.{$mode_name}";
++            $this->derivatives[$plugin_id] = [
++              'admin_label' => $this->t(
++                '@entity_type (@bundle) @mode form',
++                [
++                  '@entity_type' => $entity_type->getLabel(),
++                  '@bundle' => $bundle_info['label'],
++                  '@mode' => $mode_label,
++                ]
+               ),
+-            ],
+-          ] + $base_plugin_definition;
+-
+-          foreach ($entity_form_display->getFormEntityConfig() as $namespace => $form_entity_info) {
+-            if ($form_entity_info['plugin'] != 'provided') {
+-              continue;
++              'entity_type' => $entity_type_id,
++              'bundle' => $bundle,
++              'form_mode' => $mode_name,
++              'context' => [
++                'entity' => new ContextDefinition(
++                  'entity:' . $entity_type_id,
++                  $this->t('Base @entity_type', ['@entity_type' => $entity_type->getLabel()])
++                ),
++              ],
++            ] + $base_plugin_definition;
++
++            foreach ($entity_form_display->getFormEntityConfig() as $namespace => $form_entity_info) {
++              if ($form_entity_info['plugin'] != 'provided') {
++                continue;
++              }
++
++              $this->derivatives[$plugin_id]['context'][$namespace] = new ContextDefinition(
++                'entity:' . $form_entity_info['entity_type'],
++                $form_entity_info['label']
++              );
+             }
+-
+-            $this->derivatives[$plugin_id]['context'][$namespace] = new ContextDefinition(
+-              'entity:' . $form_entity_info['entity_type'],
+-              $form_entity_info['label']
+-            );
+           }
++        } catch (\Exception $e) {
++          $this->logger->error(
++            'Error (@code) generating derivatives on @entity_type. @message @trace',
++            [
++              '@entity_type' => $entity_type->getLabel(),
++              '@code' => $e->getCode(),
++              '@message' => $e->getMessage(),
++              '@trace' => $e->getTraceAsString()
++            ]
++          );
+         }
+       }
+     }

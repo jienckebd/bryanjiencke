@@ -6,11 +6,13 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\bd_core\Entity\EntityBulkUpdate;
 
 /**
  * Class Sys
@@ -37,6 +39,11 @@ class SysInternal {
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   public $configFactory;
+
+  /**
+   * @var \Drupal\Core\Config\ConfigInstallerInterface
+   */
+  public $configInstaller;
 
   /**
    * @var \Drupal\Core\State\StateInterface
@@ -74,22 +81,37 @@ class SysInternal {
 
   /**
    * SysInternal constructor.
-   * @param EntityTypeManagerInterface $entity_type_manager
-   * @param EntityBulkUpdate $entity_bulk_update
-   * @param Connection $database
-   * @param ConfigFactoryInterface $config_factory
-   * @param StateInterface $state
-   * @param KeyValueFactoryInterface $key_value
-   * @param ModuleHandlerInterface $module_handler
-   * @param ModuleInstallerInterface $module_installer
-   * @param AccountInterface $current_user
-   * @param SessionManagerInterface $session_manager
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\bd_core\Entity\EntityBulkUpdate $entity_bulk_update
+   * @param \Drupal\Core\Database\Connection $database
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   * @param \Drupal\Core\Config\ConfigInstallerInterface $config_installer
+   * @param \Drupal\Core\State\StateInterface $state
+   * @param \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $key_value
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   * @param \Drupal\Core\Extension\ModuleInstallerInterface $module_installer
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param \Drupal\Core\Session\SessionManagerInterface $session_manager
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityBulkUpdate $entity_bulk_update, Connection $database, ConfigFactoryInterface $config_factory, StateInterface $state, KeyValueFactoryInterface $key_value, ModuleHandlerInterface $module_handler, ModuleInstallerInterface $module_installer, AccountInterface $current_user, SessionManagerInterface $session_manager) {
+  public function __construct(
+    EntityTypeManagerInterface $entity_type_manager,
+    EntityBulkUpdate $entity_bulk_update,
+    Connection $database,
+    ConfigFactoryInterface $config_factory,
+    ConfigInstallerInterface $config_installer,
+    StateInterface $state,
+    KeyValueFactoryInterface $key_value,
+    ModuleHandlerInterface $module_handler,
+    ModuleInstallerInterface $module_installer,
+    AccountInterface $current_user,
+    SessionManagerInterface $session_manager
+  ) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityBulkUpdate = $entity_bulk_update;
     $this->database = $database;
     $this->configFactory = $config_factory;
+    $this->configInstaller = $config_installer;
     $this->state = $state;
     $this->keyValue = $key_value;
     $this->moduleHandler = $module_handler;
@@ -170,6 +192,14 @@ class SysInternal {
         }
       }
     }
+  }
+
+  /**
+   * @param $type
+   * @param $name
+   */
+  public function installDefaultConfig($type, $name) {
+    $this->configInstaller->installDefaultConfig($type, $name);
   }
 
 }

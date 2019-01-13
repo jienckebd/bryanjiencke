@@ -813,7 +813,10 @@ else {
   $_ENV['SYS_CONTEXT'] = 'cloud';
 }
 
-$context_settings_path = DRUPAL_ROOT . "/sites/default/sys/context/{$_ENV['SYS_CONTEXT']}/settings.php";
+$context_settings_path = DRUPAL_ROOT . "/sites/default/context/{$_ENV['SYS_CONTEXT']}/settings.php";
 if (file_exists($context_settings_path)) {
-  require_once $context_settings_path;
+  require_once "{$context_settings_path}";
 }
+
+$settings['redis.connection']['interface'] = 'PhpRedis';
+$settings['cache']['default'] = 'cache.backend.redis';
