@@ -36,15 +36,6 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
 
     $normalize_config = &$entity_type_config['normalize'];
 
-    // Explicitly set normalize config for an entity type takes precedence. So
-    // set this first and then process subsets.
-    foreach ($entity_types as $entity_type_id => $entity_type) {
-      if (empty($normalize_config['override'][$entity_type_id])) {
-        continue;
-      }
-      $entity_type->set('normalize', $normalize_config[$entity_type_id]);
-    }
-
     if (!empty($normalize_config['subset'])) {
       foreach ($normalize_config['subset'] as $subset_type => $subset_normalize_config) {
 
@@ -52,8 +43,15 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
           continue;
         }
 
+        // Either merge the subset config with existing normalize config or set
+        // new normalize config for each entity type.
         foreach ($entity_type_subset as $entity_type_id => $entity_type) {
-          $this->mergeNormalizeConfig($entity_type, $subset_normalize_config);
+          if (!empty($normalize_config['definition'][$entity_type_id])) {
+            $normalize_config['definition'][$entity_type_id] = array_merge_recursive($normalize_config['definition'][$entity_type_id], $subset_normalize_config);
+          }
+          else {
+            $normalize_config['definition'][$entity_type_id] = $subset_normalize_config;
+          }
         }
 
       }
@@ -61,25 +59,12 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
 
     // Once normalize config set for all entity types, process normalization.
     foreach ($entity_types as $entity_type_id => $entity_type) {
-      if (!$normalize = $entity_type->get('normalize')) {
+      if (empty($normalize_config['definition'][$entity_type_id])) {
         continue;
       }
+      $entity_type->set('normalize', $normalize_config['definition'][$entity_type_id]);
       $this->normalizeEntityType($entity_type);
     }
-  }
-
-  /**
-   * Merge normalize config settings before processing normalization.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   * @param array $normalize_config
-   *   The normalize config.
-   */
-  protected function mergeNormalizeConfig(EntityTypeInterface $entity_type, array &$normalize_config) {
-    $entity_type_normalize_config = $entity_type->get('normalize') ?: [];
-    $entity_type_normalize_config = array_merge_recursive($entity_type_normalize_config, $normalize_config);
-    $entity_type->set('normalize', $entity_type_normalize_config);
   }
 
   /**
@@ -89,47 +74,61 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
    *   The entity type.
    */
   protected function normalizeEntityType(EntityTypeInterface $entity_type) {
-    $this->normalizeEntityTypeInit($entity_type);
-    $this->normalizeEntityTypeHandler($entity_type);
-    $this->normalizeEntityTypeRouting($entity_type);
-  }
-
-  /**
-   * Normalize the entity type definitions.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   */
-  protected function normalizeEntityTypeInit(EntityTypeInterface $entity_type) {
-    $entity_type_id = $entity_type->id();
     $normalize = $entity_type->get('normalize');
+    $entity_type_id = $entity_type->id();
 
-    if ($this->isEntityTypeInSubset('content', $entity_type)) {
-      $entity_type->setClass(NormalizedContentEntity::class);
+    // These data points will all be set at end of processing at once.
+    $link_templates = $entity_type->getLinkTemplates();
+    $entity_keys = $entity_type->getKeys();
+    $handler_classes = $entity_type->getHandlerClasses();
+    $revision_metadata_keys = $entity_type->get('revision_metadata_keys');
 
-      if (!empty($normalize['revision']['make'])) {
-        $entity_keys = $entity_type->getKeys();
-        $entity_keys['revision'] = 'revision_id';
-        $entity_type->set('entity_keys', $entity_keys);
+    // Set class override.
+    if (!empty($normalize['class'])) {
+      if (class_exists($normalize['class'])) {
+        $entity_type->setClass($normalize['class']);
+      }
+    }
 
+    // Process revisionable.
+    if (!empty($normalize['revision']['make'])) {
+
+      // Set revision storage.
+      if (!$entity_type->get('revision_table')) {
         $entity_type->set('revision_table', "{$entity_type_id}_revision");
+      }
+      if (!$entity_type->get('revision_data_table')) {
         $entity_type->set('revision_data_table', "{$entity_type_id}_field_revision");
-
-        $revision_metadata_keys = [
-          'revision_log_message' => 'revision_log',
-          'revision_created' => 'revision_timestamp',
-          'revision_user' => 'revision_uid',
-          'revision_default' => 'revision_default',
-        ];
-        $entity_type->set('revision_metadata_keys', $revision_metadata_keys);
       }
 
+      // Set entity and revision metadata keys.
+      if (empty($entity_keys['revision'])) {
+        $entity_keys['revision'] = 'revision_id';
+      }
+
+      $revision_metadata_keys_defaults = [
+        'revision_log_message' => 'revision_log',
+        'revision_created' => 'revision_timestamp',
+        'revision_user' => 'revision_uid',
+        'revision_default' => 'revision_default',
+      ];
+      foreach ($revision_metadata_keys_defaults as $revision_metadata_key => $revision_metadata_value) {
+        if (empty($revision_metadata_keys[$revision_metadata_key])) {
+          $revision_metadata_keys[$revision_metadata_key] = $revision_metadata_value;
+        }
+      }
+
+      // Set revision link templates.
+      if (empty($link_templates['revision'])) {
+      }
+
+      // Add revision route provider.
     }
 
     if (!empty($normalize['handler'])) {
       foreach ($normalize['handler'] as $handler_id => $handler_class) {
         if (class_exists($handler_class)) {
-          $entity_type->setHandlerClass($handler_id, $handler_class);
+          $handler_classes[$handler_id] = $handler_class;
         }
       }
     }
@@ -137,7 +136,7 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
     if (!empty($normalize['form'])) {
       foreach ($normalize['form'] as $form_op_id => $form_class) {
         if (class_exists($form_class)) {
-          $entity_type->setFormClass($form_op_id, $form_class);
+          $handler_classes['form'][$form_op_id] = $form_class;
         }
       }
     }
@@ -147,26 +146,16 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
         $entity_type->addConstraint($validation_constraint_id, $validation_constraint_config);
       }
     }
-  }
 
-  /**
-   * Normalize the entity type definitions.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   */
-  protected function normalizeEntityTypeHandler(EntityTypeInterface $entity_type) {
-    $normalize = $entity_type->get('normalize');
-  }
-
-  /**
-   * Normalize routing and link templates.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
-   *   The entity type.
-   */
-  protected function normalizeEntityTypeRouting(EntityTypeInterface $entity_type) {
-    $normalize = $entity_type->get('normalize');
+    if (!empty($entity_keys)) {
+      $entity_type->set('entity_keys', $entity_keys);
+    }
+    if (!empty($revision_metadata_keys)) {
+      $entity_type->set('revision_metadata_keys', $revision_metadata_keys);
+    }
+    if (!empty($link_templates)) {
+      $entity_type->set('links', $link_templates);
+    }
   }
 
   /**

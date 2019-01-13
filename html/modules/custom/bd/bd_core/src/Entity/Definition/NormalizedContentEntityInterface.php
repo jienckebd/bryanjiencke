@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\bd_core\Entity;
+namespace Drupal\bd_core\Entity\Definition;
 
 use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\RevisionLogInterface;

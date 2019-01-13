@@ -2,6 +2,7 @@ entity_type:
   normalize:
     subset:
       content:
+        class: \Drupal\bd_core\Entity\Definition\NormalizedContentEntity
         handler:
           list_builder: \Drupal\bd_core\Entity\ListBuilder\EntityListBuilder
           view_builder: \Drupal\bd_core\Entity\View\EntityViewBuilder
@@ -20,8 +21,9 @@ entity_type:
       bundle:
         form:
           default: \Drupal\bd_core\Entity\Form\Bundle
-    override:
+    definition:
       taxonomy_term:
+        class: \Drupal\bd_core\Entity\Handler\Term
         revision:
           make: true
           field:
@@ -34,6 +36,7 @@ entity_type:
         validation:
           UniqueEntityLabel: {}
       menu_link_content:
+        class: \Drupal\bd_core\Entity\Definition\MenuLinkContent
         revision:
           make: true
           field:

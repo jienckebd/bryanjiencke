@@ -1,18 +1,23 @@
 <?php
 
-namespace Drupal\bd_core\Entity;
+namespace Drupal\bd_core\Entity\Definition;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\node\NodeInterface;
-use Drupal\user\UserInterface;
+use Drupal\Core\Entity\EntityPublishedTrait;
+use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\Core\Entity\RevisionLogEntityTrait;
 
 /**
  * Trait to be injected in to a content entity class.
  */
 trait NormalizedContentEntityTrait {
+
+  use EntityPublishedTrait;
+  use EntityChangedTrait;
+  use RevisionLogEntityTrait;
 
   /**
    * Whether the node is being previewed or not.
@@ -163,7 +168,7 @@ trait NormalizedContentEntityTrait {
    * {@inheritdoc}
    */
   public function setPromoted($promoted) {
-    $this->set('promote', $promoted ? NodeInterface::PROMOTED : NodeInterface::NOT_PROMOTED);
+    $this->set('promote', $promoted ? NormalizedContentEntityInterface::PROMOTED : NormalizedContentEntityInterface::NOT_PROMOTED);
     return $this;
   }
 
@@ -178,7 +183,7 @@ trait NormalizedContentEntityTrait {
    * {@inheritdoc}
    */
   public function setSticky($sticky) {
-    $this->set('sticky', $sticky ? NodeInterface::STICKY : NodeInterface::NOT_STICKY);
+    $this->set('sticky', $sticky ? NormalizedContentEntityInterface::STICKY : NormalizedContentEntityInterface::NOT_STICKY);
     return $this;
   }
 
@@ -395,6 +400,74 @@ trait NormalizedContentEntityTrait {
    */
   public static function getCurrentUserId() {
     return [\Drupal::currentUser()->id()];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->get('description')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDescription($description) {
+    $this->set('description', $description);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormat() {
+    return $this->get('description')->format;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFormat($format) {
+    $this->get('description')->format = $format;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getName() {
+    return $this->label();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setName($name) {
+    $this->set('name', $name);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWeight() {
+    return $this->get('weight')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setWeight($weight) {
+    $this->set('weight', $weight);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getVocabularyId() {
+    @trigger_error('The ' . __METHOD__ . ' method is deprecated since version 8.4.0 and will be removed before 9.0.0. Use ' . __CLASS__ . '::bundle() instead to get the vocabulary ID.', E_USER_DEPRECATED);
+    return $this->bundle();
   }
 
 }
