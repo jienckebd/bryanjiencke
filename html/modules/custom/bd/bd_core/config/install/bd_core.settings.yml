@@ -2,7 +2,6 @@ entity_type:
   normalize:
     subset:
       content:
-        class: \Drupal\bd_core\Entity\Definition\NormalizedContentEntity
         handler:
           list_builder: \Drupal\bd_core\Entity\ListBuilder\EntityListBuilder
           view_builder: \Drupal\bd_core\Entity\View\EntityViewBuilder
@@ -21,9 +20,18 @@ entity_type:
       bundle:
         form:
           default: \Drupal\bd_core\Entity\Form\Bundle
+      eck:
+        class: \Drupal\bd_core\Entity\Definition\EckEntity
+        revision:
+          make: true
+          field:
+            - title
+            - changed
+            - uid
+            - status
     definition:
       taxonomy_term:
-        class: \Drupal\bd_core\Entity\Handler\Term
+        class: \Drupal\bd_core\Entity\Definition\Term
         revision:
           make: true
           field:
@@ -50,3 +58,5 @@ entity_type:
           - enabled
           - parent
           - changed
+      activity:
+        class: \Drupal\bd_core\Entity\Definition\Activity

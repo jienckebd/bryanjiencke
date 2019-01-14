@@ -11,6 +11,18 @@ use Drupal\Core\Entity\EntityTypeInterface;
 interface EntityTypeManagerInterface extends Base {
 
   /**
+   * The subset types.
+   *
+   * @var array
+   */
+  const SUBSET_TYPE = [
+    'content',
+    'config',
+    'bundle',
+    'eck',
+  ];
+
+  /**
    * Get a subset of the entity types.
    *
    * @param string $subset_type

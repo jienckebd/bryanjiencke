@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\bd_core\Form;
+namespace Drupal\bd_core\Entity\Form;
 
 use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Form\FormStateInterface;

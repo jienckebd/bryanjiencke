@@ -25,24 +25,6 @@ require_once "bd_core.theme.inc";
  */
 function bd_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   $entity_type_id = $entity_type->id();
-  if ($entity_type_id == 'node') {
-    $fields['title']->setDisplayConfigurable('view', TRUE);
-    $fields['status']->setDisplayConfigurable('view', TRUE);
-    $fields['status']->setDisplayConfigurable('form', TRUE);
-  }
-  elseif ($entity_type_id == 'user_test') {
-    $fields['name']->setDisplayConfigurable('form', TRUE);
-    $fields['mail']->setDisplayConfigurable('form', TRUE);
-    $fields['pass']->setDisplayConfigurable('form', TRUE);
-    $fields['created']->setDisplayConfigurable('form', TRUE);
-    $fields['changed']->setDisplayConfigurable('form', TRUE);
-    $fields['roles']->setDisplayConfigurable('form', TRUE);
-  }
-  elseif ($entity_type_id == 'taxonomy_term') {
-    // $fields['name']->addConstraint('UniqueFieldValue');
-    // $fields['weight']->setDisplayConfigurable('view', TRUE);
-    // $fields['weight']->setDisplayConfigurable('form', TRUE);
-  }
 }
 
 /**

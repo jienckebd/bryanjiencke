@@ -9,6 +9,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\RevisionLogEntityTrait;
+use Drupal\user\UserInterface;
 
 /**
  * Trait to be injected in to a content entity class.
@@ -238,152 +239,161 @@ trait NormalizedContentEntityTrait {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    $normalize = $entity_type->get('normalize');
     $entity_type_id = $entity_type->id();
     $entity_keys = $entity_type->getKeys();
-    $revision_metadata_keys = $entity_type->get('revision_metadata_keys');
 
-    $fields['uid'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Authored by'))
-      ->setDescription(t('The username of the content author.'))
-      ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'user')
-      ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
-      ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'author',
-        'weight' => 0,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => [
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'placeholder' => '',
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['status']
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-        'weight' => 120,
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['created'] = BaseFieldDefinition::create('created')
-      ->setLabel(t('Authored on'))
-      ->setDescription(t('The time that the node was created.'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'timestamp',
-        'weight' => 0,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'datetime_timestamp',
-        'weight' => 10,
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['changed'] = BaseFieldDefinition::create('changed')
-      ->setLabel(t('Changed'))
-      ->setDescription(t('The time that the node was last edited.'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(TRUE);
-
-    $fields['promote'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Promoted to front page'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(TRUE)
-      ->setDefaultValue(TRUE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-        'weight' => 15,
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['sticky'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Sticky at top of lists'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(TRUE)
-      ->setDefaultValue(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-        'weight' => 16,
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    if ($entity_type_id == 'taxonomy_term') {
-      $fields['name'] = BaseFieldDefinition::create('string')
-        ->setLabel(t('Name'))
-        ->setTranslatable(TRUE)
-        ->setRequired(TRUE)
-        ->setSetting('max_length', 255)
-        ->setDisplayOptions('view', [
-          'label' => 'hidden',
-          'type' => 'string',
-          'weight' => -5,
-        ])
-        ->setDisplayOptions('form', [
-          'type' => 'string_textfield',
-          'weight' => -5,
-        ])
-        ->setDisplayConfigurable('form', TRUE);
-
-      $fields['description'] = BaseFieldDefinition::create('text_long')
-        ->setLabel(t('Description'))
-        ->setTranslatable(TRUE)
-        ->setDisplayOptions('view', [
-          'label' => 'hidden',
-          'type' => 'text_default',
-          'weight' => 0,
-        ])
-        ->setDisplayConfigurable('view', TRUE)
-        ->setDisplayOptions('form', [
-          'type' => 'text_textfield',
-          'weight' => 0,
-        ])
-        ->setDisplayConfigurable('form', TRUE);
-
-      $fields['weight'] = BaseFieldDefinition::create('integer')
-        ->setLabel(t('Weight'))
-        ->setDescription(t('The weight of this term in relation to other terms.'))
-        ->setDefaultValue(0);
-
-      $fields['parent'] = BaseFieldDefinition::create('entity_reference')
-        ->setLabel(t('Term Parents'))
-        ->setDescription(t('The parents of this term.'))
-        ->setSetting('target_type', 'taxonomy_term')
-        ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED);
+    if (!empty($entity_keys['revision'])) {
+      $fields += static::revisionLogBaseFieldDefinitions($entity_type);
     }
 
-    $fields_make_revisionable = [];
+    if (!empty($normalize['field']['add'])) {
+
+      if (in_array('uid', $normalize['field']['add'])) {
+        $fields['uid'] = BaseFieldDefinition::create('entity_reference')
+          ->setLabel(t('Authored by'))
+          ->setDescription(t('The username of the content author.'))
+          ->setRevisionable(TRUE)
+          ->setSetting('target_type', 'user')
+          ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
+          ->setTranslatable(TRUE)
+          ->setDisplayOptions('view', [
+            'label' => 'hidden',
+            'type' => 'author',
+            'weight' => 0,
+          ])
+          ->setDisplayOptions('form', [
+            'type' => 'entity_reference_autocomplete',
+            'weight' => 5,
+            'settings' => [
+              'match_operator' => 'CONTAINS',
+              'size' => '60',
+              'placeholder' => '',
+            ],
+          ])
+          ->setDisplayConfigurable('form', TRUE);
+      }
+
+      if (in_array('created', $normalize['field']['add'])) {
+        $fields['created'] = BaseFieldDefinition::create('created')
+          ->setLabel(t('Authored on'))
+          ->setDescription(t('The time that the node was created.'))
+          ->setRevisionable(TRUE)
+          ->setTranslatable(TRUE)
+          ->setDisplayOptions('view', [
+            'label' => 'hidden',
+            'type' => 'timestamp',
+            'weight' => 0,
+          ])
+          ->setDisplayOptions('form', [
+            'type' => 'datetime_timestamp',
+            'weight' => 10,
+          ]);
+      }
+
+      if (in_array('changed', $normalize['field']['add'])) {
+        $fields['changed'] = BaseFieldDefinition::create('changed')
+          ->setLabel(t('Changed'))
+          ->setDescription(t('The time that the node was last edited.'))
+          ->setRevisionable(TRUE)
+          ->setTranslatable(TRUE);
+      }
+
+      if (in_array('promote', $normalize['field']['add'])) {
+        $fields['promote'] = BaseFieldDefinition::create('boolean')
+          ->setLabel(t('Promoted to front page'))
+          ->setRevisionable(TRUE)
+          ->setTranslatable(TRUE)
+          ->setDefaultValue(TRUE)
+          ->setDisplayOptions('form', [
+            'type' => 'boolean_checkbox',
+            'settings' => [
+              'display_label' => TRUE,
+            ],
+            'weight' => 15,
+          ])
+          ->setDisplayConfigurable('form', TRUE);
+      }
+
+      if (in_array('sticky', $normalize['field']['add'])) {
+        $fields['sticky'] = BaseFieldDefinition::create('boolean')
+          ->setLabel(t('Sticky at top of lists'))
+          ->setRevisionable(TRUE)
+          ->setTranslatable(TRUE)
+          ->setDefaultValue(FALSE)
+          ->setDisplayOptions('form', [
+            'type' => 'boolean_checkbox',
+            'settings' => [
+              'display_label' => TRUE,
+            ],
+            'weight' => 16,
+          ])
+          ->setDisplayConfigurable('form', TRUE);
+      }
+
+      if (in_array('weight', $normalize['field']['add'])) {
+        $fields['weight'] = BaseFieldDefinition::create('integer')
+          ->setLabel(t('Weight'))
+          ->setDescription(t('The weight of this term in relation to other terms.'))
+          ->setDefaultValue(0);
+      }
+
+      if (in_array('parent', $normalize['field']['add'])) {
+        $fields['parent'] = BaseFieldDefinition::create('entity_reference')
+          ->setLabel(t('Parents'))
+          ->setDescription(t('The parents of this term.'))
+          ->setSetting('target_type', 'taxonomy_term')
+          ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED);
+      }
+
+    }
+
+    if (!empty($normalize['revision']['field'])) {
+      foreach ($normalize['revision']['field'] as $field_name) {
+        if (!empty($fields[$field_name])) {
+
+          /** @var \Drupal\Core\Field\BaseFieldDefinition $field */
+          $field = $fields[$field_name];
+          $field->setRevisionable(TRUE);
+
+        }
+      }
+    }
+
+    $display_configurable_view_field = [];
+    $display_configurable_form_field = [];
+    if (!empty($entity_keys['published'])) {
+      $display_configurable_form_field[] = $entity_keys['published'];
+      $display_configurable_view_field[] = $entity_keys['published'];
+    }
     if (!empty($entity_keys['label'])) {
-      $fields_make_revisionable[] = $entity_keys['label'];
+      $display_configurable_form_field[] = $entity_keys['label'];
+      $display_configurable_view_field[] = $entity_keys['label'];
     }
-    $fields_make_revisionable[] = 'weight';
-    $fields_make_revisionable[] = 'changed';
-    $fields_make_revisionable[] = 'status';
+    if (!empty($entity_keys['bundle'])) {
+      $display_configurable_view_field[] = $entity_keys['bundle'];
+    }
+    if (!empty($fields['created'])) {
+      $display_configurable_form_field[] = 'created';
+      $display_configurable_view_field[] = 'created';
+    }
+    if (!empty($fields['changed'])) {
+      $display_configurable_view_field[] = 'changed';
+    }
+    if (!empty($fields['uid'])) {
+      $display_configurable_form_field[] = 'uid';
+      $display_configurable_view_field[] = 'uid';
+    }
 
-    foreach ($fields_make_revisionable as $field_name) {
+    foreach ($display_configurable_view_field as $field_name) {
       if (!empty($fields[$field_name])) {
+        $fields[$field_name]->setDisplayConfigurable('view', TRUE);
+      }
+    }
 
-        /** @var \Drupal\Core\Field\BaseFieldDefinition $field */
-        $field = $fields[$field_name];
-        $field->setRevisionable(TRUE);
-
+    foreach ($display_configurable_form_field as $field_name) {
+      if (!empty($fields[$field_name])) {
+        $fields[$field_name]->setDisplayConfigurable('form', TRUE);
       }
     }
 
@@ -400,74 +410,6 @@ trait NormalizedContentEntityTrait {
    */
   public static function getCurrentUserId() {
     return [\Drupal::currentUser()->id()];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDescription() {
-    return $this->get('description')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setDescription($description) {
-    $this->set('description', $description);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormat() {
-    return $this->get('description')->format;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setFormat($format) {
-    $this->get('description')->format = $format;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getName() {
-    return $this->label();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setName($name) {
-    $this->set('name', $name);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getWeight() {
-    return $this->get('weight')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setWeight($weight) {
-    $this->set('weight', $weight);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getVocabularyId() {
-    @trigger_error('The ' . __METHOD__ . ' method is deprecated since version 8.4.0 and will be removed before 9.0.0. Use ' . __CLASS__ . '::bundle() instead to get the vocabulary ID.', E_USER_DEPRECATED);
-    return $this->bundle();
   }
 
 }

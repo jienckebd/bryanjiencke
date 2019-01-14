@@ -16,7 +16,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  *
  * @internal
  */
-class AutorefSettings extends ConfigFormBase {
+class Settings extends ConfigFormBase {
 
   /**
    * The entity type manager.

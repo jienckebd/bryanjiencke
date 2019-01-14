@@ -6,11 +6,52 @@ use Drupal\Core\Entity\EntityTypeManager as Base;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
+use Drupal\bd_core\Entity\Exception\InvalidSubsetEntityType;
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\DependencyInjection\ClassResolverInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\Core\StringTranslation\TranslationInterface;
 
 /**
  * Extends core entity type manager.
  */
 class EntityTypeManager extends Base implements EntityTypeManagerInterface {
+
+  /**
+   * The entity logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $logger;
+
+  /**
+   * EntityTypeManager constructor.
+   *
+   * @param \Traversable $namespaces
+   *   The namespaces.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The cache backend.
+   * @param \Drupal\Core\StringTranslation\TranslationInterface $string_translation
+   *   String translation.
+   * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
+   *   Class resolver.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The logger channel.
+   */
+  public function __construct(
+    \Traversable $namespaces,
+    ModuleHandlerInterface $module_handler,
+    CacheBackendInterface $cache,
+    TranslationInterface $string_translation,
+    ClassResolverInterface $class_resolver,
+    LoggerChannelInterface $logger
+  ) {
+    parent::__construct($namespaces, $module_handler, $cache, $string_translation, $class_resolver);
+    $this->logger = $logger;
+  }
 
   /**
    * {@inheritdoc}
@@ -47,7 +88,7 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
         // new normalize config for each entity type.
         foreach ($entity_type_subset as $entity_type_id => $entity_type) {
           if (!empty($normalize_config['definition'][$entity_type_id])) {
-            $normalize_config['definition'][$entity_type_id] = array_merge_recursive($normalize_config['definition'][$entity_type_id], $subset_normalize_config);
+            $normalize_config['definition'][$entity_type_id] = array_replace_recursive($normalize_config['definition'][$entity_type_id], $subset_normalize_config);
           }
           else {
             $normalize_config['definition'][$entity_type_id] = $subset_normalize_config;
@@ -87,6 +128,12 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
     if (!empty($normalize['class'])) {
       if (class_exists($normalize['class'])) {
         $entity_type->setClass($normalize['class']);
+      }
+      else {
+        $this->logger->warning("Invalid class @class for entity type @entity_type.", [
+          '@class' => $normalize['class'],
+          '@entity_type' => $entity_type_id,
+        ]);
       }
     }
 
@@ -130,6 +177,13 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
         if (class_exists($handler_class)) {
           $handler_classes[$handler_id] = $handler_class;
         }
+        else {
+          $this->logger->warning("Invalid @handler_type handler class @class for entity type @entity_type.", [
+            '@class' => $handler_class,
+            '@handler_type' => $handler_id,
+            '@entity_type' => $entity_type_id,
+          ]);
+        }
       }
     }
 
@@ -137,6 +191,13 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
       foreach ($normalize['form'] as $form_op_id => $form_class) {
         if (class_exists($form_class)) {
           $handler_classes['form'][$form_op_id] = $form_class;
+        }
+        else {
+          $this->logger->warning("Invalid form class @class for form op @form_op_id for entity type @entity_type.", [
+            '@class' => $form_class,
+            '@form_op_id' => $form_op_id,
+            '@entity_type' => $entity_type_id,
+          ]);
         }
       }
     }
@@ -162,8 +223,12 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
    * {@inheritdoc}
    */
   public function getDefinitionsSubset($subset_type, array &$entity_types = []) {
+    if (!in_array($subset_type, static::SUBSET_TYPE)) {
+      throw new InvalidSubsetEntityType("{$subset_type} is not a valid subset of the entity types.");
+    }
+
     if (empty($entity_types)) {
-      $entity_types = $this->findDefinitions();
+      $entity_types = $this->getDefinitions();
     }
 
     $entity_types_subset = [];
@@ -181,6 +246,9 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
    * {@inheritdoc}
    */
   public function isEntityTypeInSubset($subset_type, EntityTypeInterface $entity_type) {
+    if (!in_array($subset_type, static::SUBSET_TYPE)) {
+      throw new InvalidSubsetEntityType("{$subset_type} is not a valid subset of the entity types.");
+    }
     $return = FALSE;
 
     switch ($subset_type) {
@@ -199,6 +267,12 @@ class EntityTypeManager extends Base implements EntityTypeManagerInterface {
 
       case 'bundle':
         if ($entity_type instanceof ConfigEntityTypeInterface && $entity_type->getBundleOf()) {
+          $return = TRUE;
+        }
+        break;
+
+      case 'eck':
+        if ($entity_type instanceof ContentEntityTypeInterface && $entity_type->getProvider() == 'eck') {
           $return = TRUE;
         }
         break;

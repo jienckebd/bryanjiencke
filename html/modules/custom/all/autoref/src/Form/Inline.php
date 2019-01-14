@@ -9,7 +9,7 @@ use Drupal\inline_entity_form\Form\EntityInlineForm;
 /**
  * Defines the inline form for order items.
  */
-class AutorefInlineForm extends EntityInlineForm {
+class Inline extends EntityInlineForm {
 
   /**
    * {@inheritdoc}

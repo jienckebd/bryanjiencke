@@ -21,6 +21,7 @@ class BdCoreServiceProvider extends ServiceProviderBase {
 
     $definition = $container->getDefinition('entity_type.manager');
     $definition->setClass(EntityTypeManager::class);
+    $definition->addArgument(new Reference("logger.channel.bd.entity"));
 
     $definition = $container->getDefinition('entity_field.manager');
     $definition->setClass(EntityFieldManager::class);
