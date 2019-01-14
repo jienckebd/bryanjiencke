@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, update and uninstall functions for the cn_core module.
+ * Install, update and uninstall functions for the bd_core module.
  */
 
 /**
@@ -10,7 +10,7 @@
  */
 function sys_core_update_8001() {
 
-  /** @var \Drupal\cn_core\Service\SysInternal $sys_manager_internal */
+  /** @var \Drupal\bd_core\Service\SysInternal $sys_manager_internal */
   $sys_manager_internal = \Drupal::service('sys.internal');
 
   // Delete all tm_theme_alpha configs.

@@ -1,0 +1,62 @@
+entity_type:
+  normalize:
+    subset:
+      content:
+        handler:
+          list_builder: \Drupal\bd_core\Entity\ListBuilder\EntityListBuilder
+          view_builder: \Drupal\bd_core\Entity\View\EntityViewBuilder
+          access: \Drupal\bd_core\Entity\Access\EntityAccessControlHandler
+          inline_form: \Drupal\bd_core\Entity\Form\ContentInline
+        form:
+          default: \Drupal\bd_core\Entity\Form\Content
+          add: \Drupal\bd_core\Entity\Form\Content
+          edit: \Drupal\bd_core\Entity\Form\Content
+          modal: \Drupal\bd_core\Entity\Form\ContentModal
+      config:
+        form:
+          default: \Drupal\bd_core\Entity\Form\Config
+          add: \Drupal\bd_core\Entity\Form\Config
+          edit: \Drupal\bd_core\Entity\Form\Config
+      bundle:
+        form:
+          default: \Drupal\bd_core\Entity\Form\Bundle
+      eck:
+        class: \Drupal\bd_core\Entity\Definition\EckEntity
+        revision:
+          make: true
+          field:
+            - title
+            - changed
+            - uid
+            - status
+    definition:
+      taxonomy_term:
+        class: \Drupal\bd_core\Entity\Definition\Term
+        revision:
+          make: true
+          field:
+            - name
+            - description
+            - status
+            - sticky
+            - promote
+            - weight
+        validation:
+          UniqueEntityLabel: {}
+      menu_link_content:
+        class: \Drupal\bd_core\Entity\Definition\MenuLinkContent
+        revision:
+          make: true
+          field:
+          - title
+          - description
+          - link
+          - external
+          - rediscover
+          - weight
+          - expanded
+          - enabled
+          - parent
+          - changed
+      activity:
+        class: \Drupal\bd_core\Entity\Definition\Activity

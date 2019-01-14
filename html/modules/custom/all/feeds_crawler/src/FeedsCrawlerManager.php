@@ -2,7 +2,7 @@
 
 namespace Drupal\feeds_crawler;
 
-use Drupal\cn_core\Entity\EntityFieldManagerInterface;
+use Drupal\bd_core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;

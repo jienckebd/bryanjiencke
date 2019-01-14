@@ -1,0 +1,23 @@
+# This file defines drush configuration that applies to drush commands
+# for the entire application. For site-specific settings, like URI, use
+# ../docroot/sites/[site]/drush.yml
+drush:
+  paths:
+    config:
+      # Allow local global config overrides.
+      - dev.drush.yml
+    include:
+      - '${env.home}/.drush'
+      - /usr/share/drush/commands
+
+options:
+  # Specify the base_url that should be used when generating links.
+  # Not recommended if you have more than one Drupal site on your system.
+  uri: 'http://bryanjiencke.docksal'
+
+  # Specify your Drupal core base directory (useful if you use symlinks).
+  # Not recommended if you have more than one Drupal root on your system.
+  root: '/Users/bry/sys/platform/bryanjiencke/html'
+
+  # Enable verbose mode.
+  verbose: true

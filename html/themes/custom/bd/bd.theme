@@ -2,7 +2,5 @@
 
 /**
  * @file
- * Bootstrap sub-theme.
- *
- * Place your custom PHP code in this file.
+ * The primary PHP file for the Social Blue theme.
  */

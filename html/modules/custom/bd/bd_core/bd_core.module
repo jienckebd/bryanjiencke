@@ -1,0 +1,505 @@
+<?php
+
+/**
+ * @file
+ * Module hooks and functions for module bd_core.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Component\Utility\Unicode;
+use Drupal\views\ViewExecutable;
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Field\FormatterInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Database\Query\AlterableInterface;
+
+require_once "bd_core.theme.inc";
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function bd_core_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  $entity_type_id = $entity_type->id();
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function bd_core_entity_insert(EntityInterface $entity) {
+  bd_core_entity_insert_update($entity);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function bd_core_entity_update(EntityInterface $entity) {
+  bd_core_entity_insert_update($entity);
+}
+
+function bd_core_entity_insert_update(EntityInterface $entity) {
+  if (!method_exists($entity, 'hasField')) {
+    return;
+  }
+
+  if ($entity->hasField('field_entity_queue')) {
+    \Drupal::service('entity.queue_manager')->processEntity($entity);
+  }
+
+  if ($entity->getEntityTypeId() == 'entity_subqueue') {
+    \Drupal::service('entity.queue_manager')->processQueue($entity);
+  }
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function bd_core_entity_field_access($operation, \Drupal\Core\Field\FieldDefinitionInterface $field_definition, \Drupal\Core\Session\AccountInterface $account, \Drupal\Core\Field\FieldItemListInterface $items = NULL) {
+
+  if (!empty($items)) {
+    $entity = $items->getEntity();
+    $field_name = $field_definition->getName();
+    $field_name_role_access = "field_role_{$field_name}";
+    if ($entity->hasField($field_name_role_access)) {
+      if ($field_value_roles = $entity->get($field_name_role_access)->getValue()) {
+        $allowed_roles = [];
+        foreach ($field_value_roles as $key => $data) {
+          $allowed_roles[] = $data['target_id'];
+        }
+        $user_roles = $account->getRoles();
+        if (array_intersect($allowed_roles, $user_roles)) {
+          return AccessResult::neutral();
+        }
+        return AccessResult::forbidden();
+      }
+    }
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ * Targets multivalued fields only.
+ *
+ * @param array $summary
+ * @param array $context
+ */
+function bd_core_field_formatter_settings_summary_alter(array &$summary, array $context) {
+
+  if (($context['field_definition'] instanceof FieldDefinitionInterface)
+    && $context['field_definition']->getFieldStorageDefinition()->isMultiple()) {
+
+    $setting = $context['formatter']->getThirdPartySetting('bd_core', 'delimiter');
+
+    // Sanitize delimiter, allow a few reasonable HTML elements.
+    $safe_delimiter = Xss::filter($setting, array('br', 'hr', 'span', 'img', 'wbr'));
+
+    if (!empty($safe_delimiter)) {
+      $summary[] = t('Delimited by: @delimiter', array('@delimiter' => $safe_delimiter));
+    }
+  }
+}
+
+/**
+ * @param FormatterInterface $plugin
+ * @param FieldDefinitionInterface $field_definition
+ * @param $view_mode
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @return array
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ */
+function bd_core_field_formatter_third_party_settings_form(FormatterInterface $plugin, FieldDefinitionInterface $field_definition, $view_mode, $form, FormStateInterface $form_state) {
+  $element = [];
+
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  if ($field_definition->getFieldStorageDefinition()->isMultiple()) {
+    $setting = $plugin->getThirdPartySetting('bd_core', 'delimiter');
+    $element['delimiter'] = [
+      '#type' => 'textfield',
+      '#size' => 5,
+      '#title' => t('Field Delimiter'),
+      '#default_value' => Xss::filter($setting, ['br', 'hr', 'span', 'img', 'wbr']),
+    ];
+  }
+
+  $roles = $entity_type_manager->getStorage('user_role')->loadMultiple();
+
+  $element['access'] = [
+    '#type' => 'details',
+    '#title' => t('Access'),
+    '#open' => FALSE,
+  ];
+
+  $options_roles = [];
+  foreach ($roles as $role) {
+    $options_roles[$role->id()] = $role->label();
+  }
+
+  $element['access']['role'] = [
+    '#type' => 'checkboxes',
+    '#title' => t('Roles'),
+    '#options' => $options_roles,
+  ];
+
+  return $element;
+}
+
+/**
+ * @param $blocks
+ */
+function bd_core_block_alter($blocks) {
+  foreach ($blocks as $key => $block) {
+    if ($block['provider'] == 'block_content') {
+      $blocks[$key]['class'] = '\Drupal\bd_core\Plugin\BlockContentBlock';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bd_core_form_search_block_form_alter(&$form, FormStateInterface $form_state) {
+  $form['keys']['#attributes']['placeholder'] = t('Type to search...');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bd_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  $storage = $form_state->getStorage();
+
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $storage['view'];
+
+  $search_keys = [
+    'keys',
+    'keywords',
+    'search_api_fulltext',
+  ];
+
+  foreach ($search_keys as $search_key) {
+    if (!empty($form[$search_key])) {
+      $form[$search_key]['#attributes']['placeholder'] = t('Type to search...');
+      $form[$search_key]['#attributes']['class'][] = 'autofocus';
+      $form[$search_key]['#title_display'] = 'invisible';
+      break;
+    }
+  }
+
+  $date_keys = [
+    'field_date',
+    'field_date_1',
+    'field_date_value',
+    'field_date_value_1',
+    'created',
+    'created_1',
+  ];
+
+  $has_date_fields = FALSE;
+
+  $form['dates'] = [
+    '#type' => 'details',
+    '#title' => t('Dates'),
+    '#open' => TRUE,
+    '#attributes' => [
+      'class' => [
+        'clear-both',
+      ],
+    ],
+  ];
+
+  foreach ($date_keys as $key) {
+    if (!empty($form[$key])) {
+
+      if (!empty($form['#info']['filter-' . $key]['label'])) {
+        $label = $form['#info']['filter-' . $key]['label'];
+        $form[$key]['#title'] = $label;
+      }
+
+      // Move dates to within details.
+      $form[$key]['#type'] = 'date';
+      $form['dates'][$key] = $form[$key];
+      unset($form[$key]);
+
+      // Flag as having date fields.
+      $has_date_fields = TRUE;
+    }
+  }
+
+  if ($has_date_fields == FALSE) {
+    unset($form['dates']);
+  }
+
+  $form_class = Html::cleanCssIdentifier('views-exposed-form--' . $view->id());
+  $form['#attributes']['class'][] = $form_class;
+
+  $view_tags = explode(',', $view->storage->get('tag'));
+
+  if (in_array('filter-enhanced', $view_tags)) {
+    $form['#attributes']['class'][] = 'views-exposed-form--filter-enhanced';
+    $form['#attributes']['class'][] = 'sticky-scroll';
+    if (!empty($form['field_tags'])) {
+      $form['field_tags']['#title_display'] = 'invisible';
+      $form['field_tags']['#attributes']['data-placeholder'] = t('Select tags...');
+    }
+
+    if (!empty($form['sort_bef_combine'])) {
+      $form['sort_bef_combine']['#title_display'] = 'invisible';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function bd_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form_class = Html::cleanCssIdentifier('form--' . $form_id);
+  $form['#attributes']['class'][] = $form_class;
+}
+
+/**
+ * Implements hook_ajax_render_alter().
+ */
+function bd_core_ajax_render_alter(&$commands) {
+  foreach ($commands as $key => $command) {
+    if (isset($command['method']) && ($command['method'] == 'replaceWith')) {
+      $commands[$key]['effect'] = 'fade';
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for user entities.
+ */
+function bd_core_user_view(array &$build, EntityInterface $account, EntityViewDisplayInterface $display, $view_mode) {
+  if ($display->getComponent('realname')) {
+    $markup = '<h3>' . $account->realname . '</h3>';
+
+    $build['realname'] = [
+      '#theme' => 'field',
+      '#title' => t('Real name'),
+      '#label_display' => 'hidden',
+      '#view_mode' => '_custom',
+      '#field_name' => 'realname',
+      '#field_type' => 'text',
+      '#field_translatable' => FALSE,
+      '#entity_type' => 'custom',
+      '#bundle' => 'custom',
+      '#object' => $account,
+      '#items' => [TRUE],
+      '#is_multiple' => FALSE,
+      0 => [
+        '#markup' => $markup,
+      ],
+    ];
+  }
+}
+
+/**
+ * @param $array
+ * @param $original_key
+ * @param $new_key
+ * @return array
+ */
+function bd_core_array_change_key(&$array, $original_key, $new_key) {
+
+  if (!array_key_exists($original_key, $array)) {
+    return $array;
+  }
+
+  $keys = array_keys($array);
+  $keys[array_search($original_key, $keys)] = $new_key;
+
+  $array = array_combine($keys, $array);
+  return $array;
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function bd_core_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'core' && isset($libraries['jquery.ui'])) {
+    $libraries_path = drupal_get_path('module', 'bd_core') . '/libraries';
+
+    $new_path = "/{$libraries_path}/jquery.ui/css/theme.css";
+    bd_core_array_change_key($libraries['jquery.ui']['css']['theme'], 'assets/vendor/jquery.ui/themes/base/theme.css', $new_path);
+
+    $new_path = "/{$libraries_path}/jquery.ui.dialog/css/dialog.css";
+    bd_core_array_change_key($libraries['jquery.ui.dialog']['css']['component'], 'assets/vendor/jquery.ui/themes/base/dialog.css', $new_path);
+
+    $replacements = [
+      'jquery.ui.dialog',
+    ];
+
+  }
+
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function bd_core_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity instanceof \Drupal\Core\Entity\ContentEntityInterface) {
+    $entity_type_manager = \Drupal::entityTypeManager();
+    if ($entity->hasField('field_summary') && $entity->hasField('field_content')) {
+      $paragraph_storage = $entity_type_manager->getStorage('paragraph');
+      $summary = NULL;
+      foreach ($entity->get('field_content')->getValue() as $key => $value) {
+        if (!empty($value['target_id'])) {
+          $paragraph = $paragraph_storage->load($value['target_id']);
+          if (!empty($paragraph->bundle() == 'copy')) {
+            $summary = bd_core_text_summary($paragraph->field_content->value, 300);
+            if (empty($entity->field_summary->value) && !empty($summary)) {
+              $entity->field_summary->value = strip_tags($summary);
+            }
+            break;
+          }
+        }
+      }
+    }
+
+    // Set the format to rich_text if not set.
+    if ($entity->hasField('field_content')) {
+      $content_values = $entity->get('field_content')->getValue();
+      $format_set = FALSE;
+      foreach ($content_values as $delta => $content_value) {
+        if (!empty($content_value['value']) && empty($content_value['format'])) {
+          $content_values[$delta]['format'] = 'rich_text';
+          $format_set = TRUE;
+        }
+      }
+      if ($format_set == TRUE) {
+        $entity->set('field_content', $content_values);
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to provide text summary.
+ */
+function bd_core_text_summary($text, $size = 300, $wordsafe = TRUE, $add_ellipsis = TRUE, $min_wordsafe_length = 2) {
+  $text = str_replace('&nbsp;', ' ', $text);
+  $text = strip_tags($text);
+  $text = Unicode::truncate($text, $size, $wordsafe, $add_ellipsis, $min_wordsafe_length);
+  return $text;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function bd_core_views_pre_render(ViewExecutable $view) {
+  if ($view->ajaxEnabled() && empty($view->is_attachment) && empty($view->live_preview)) {
+    $display = $view->getDisplay();
+    if ($display->getOption('use_ajax_js')) {
+      $view->element['#attached']['library'][] = 'tm_theme_alpha/views-ajax';
+      $view->element['#attached']['drupalSettings']['viewsAjaxHistory'] = ['renderPageItem' => pager_find_page()];
+      $view->element['#cache']['contexts'][] = 'url.query_args.pagers';
+    }
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * Views aggregation adds aggregation to all fields in the view, which is often
+ * not desired. This hook will group by only the entity ID cleanly.
+ *
+ * @todo move to view configuration to avoid adding each view ID here.
+ */
+function bd_core_query_group_by_entity_id_alter(AlterableInterface $query) {
+
+  /** @var \Drupal\views\ViewExecutable $view */
+  if ($view = $query->getMetaData('view')) {
+
+    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
+    $entity_type = $view->getBaseEntityType();
+
+    $data_table = $entity_type->getDataTable();
+    $id_key = $entity_type->getKey('id');
+    $group_by_table_and_field = "{$data_table}.{$id_key}";
+
+    // Add the group by.
+    $query->groupBy($group_by_table_and_field);
+  }
+}
+
+/**
+ * Implements hook_toolbar().
+ */
+function bd_core_toolbar() {
+
+  $items = [];
+  $route = \Drupal::routeMatch()->getRouteName();
+  $manager = \Drupal::service('plugin.manager.menu.local_task');
+  $primary = $manager->getLocalTasks($route, 0);
+
+  foreach($primary['tabs'] as $key => $tab) {
+
+    // add toolbar tab
+    $items[$key] = [
+      '#type' => 'toolbar_item',
+      '#cache' => [ // Can I overrule the toolbar cache here?
+        'max-age' => 0,
+      ],
+      'tab' => [
+        '#type' => 'link',
+        '#title' => $tab['#link']['title'],
+        '#url' => $tab['#link']['url'],
+        '#access' => $tab['#access'],
+        '#attributes' => [
+          'title' => $tab['#link']['title'],
+        ],
+      ],
+      '#weight' => $tab['#weight'],
+    ];
+
+    // check if task is active
+    if($tab['#active']) {
+      $items[$key]['tab']['#attributes']['class'][] = 'is-active';
+    }
+
+    // get secondary tabs for each primary tab
+    $route = $items[$key]['tab']['#url']->getRouteName();
+    $secondary = $manager->getLocalTasks($route, 1);
+
+    // get secondary tabs as tray
+    if (!empty($secondary['tabs'])) {
+
+      $links = [];
+      $items[$key]['tab']['#attributes']['class'][] = 'toolbar-parent';
+
+      // create renderable array of secondary links
+      foreach ($secondary['tabs'] as $skey => $stab) {
+        $sname = substr($skey, strrpos($key, '.') + 1);
+        $links[$sname] = [
+          'type' => 'link',
+          'title' => $stab['#link']['title'],
+          'url' => $stab['#link']['url'],
+        ];
+      }
+
+      // add tray with secondary tasks
+      $items[$key]['tray'] = [
+        '#heading' => t('Secondary tasks'),
+        'toolbar_secondary_tasks' => [
+          '#theme' => 'links__toolbar',
+          '#links' => $links,
+          '#attributes' => ['class' => ['toolbar-menu']],
+        ],
+      ];
+
+    }
+
+  }
+
+  return $items;
+}

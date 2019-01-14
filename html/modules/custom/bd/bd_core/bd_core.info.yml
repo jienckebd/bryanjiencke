@@ -1,0 +1,6 @@
+name: 'BD Core'
+core: 8.x
+type: module
+description: 'Better Drupal: core.'
+version: '8.x-1.0.0'
+package: BD

@@ -773,17 +773,50 @@ $settings['file_scan_ignore_directories'] = [
  */
 $settings['entity_update_batch_size'] = 50;
 
-/**
- * Load local development override configuration, if available.
- *
- * Use settings.local.php to override variables on secondary (staging,
- * development, etc) installations of this site. Typically used to disable
- * caching, JavaScript/CSS compression, re-routing of outgoing emails, and
- * other things that should not happen on development and testing sites.
- *
- * Keep this code block at the end of this file to take full effect.
- */
+// Workaround for permission issues with NFS shares
+$settings['file_chmod_directory'] = 0777;
+$settings['file_chmod_file'] = 0666;
 
-if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
-  include $app_root . '/' . $site_path . '/settings.local.php';
+$config['system.file']['path']['temporary'] = '/tmp';
+
+// Reverse proxy configuration (Docksal vhost-proxy)
+if (PHP_SAPI !== 'cli') {
+  $settings['reverse_proxy'] = TRUE;
+  $settings['reverse_proxy_addresses'] = array($_SERVER['REMOTE_ADDR']);
+  // HTTPS behind reverse-proxy
+  if (
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' &&
+    !empty($settings['reverse_proxy']) && in_array($_SERVER['REMOTE_ADDR'], $settings['reverse_proxy_addresses'])
+  ) {
+    $_SERVER['HTTPS'] = 'on';
+    // This is hardcoded because there is no header specifying the original port.
+    $_SERVER['SERVER_PORT'] = 443;
+  }
 }
+
+/**
+ * Determine system context.
+ */
+$is_cloud = isset($_ENV['AWS']);
+$is_ci = isset($_ENV['TRAVIS']);
+$is_local = !$is_cloud && !$is_ci;
+$is_local_host = file_exists("{$_SERVER['HOME']}/sys/platform");
+
+if ($is_local) {
+  $_ENV['SYS_CONTEXT'] = 'local';
+}
+elseif ($is_ci) {
+  $_ENV['SYS_CONTEXT'] = 'ci';
+}
+else {
+  // Default to cloud.
+  $_ENV['SYS_CONTEXT'] = 'cloud';
+}
+
+$context_settings_path = DRUPAL_ROOT . "/sites/default/context/{$_ENV['SYS_CONTEXT']}/settings.php";
+if (file_exists($context_settings_path)) {
+  require_once "{$context_settings_path}";
+}
+
+$settings['redis.connection']['interface'] = 'PhpRedis';
+$settings['cache']['default'] = 'cache.backend.redis';
